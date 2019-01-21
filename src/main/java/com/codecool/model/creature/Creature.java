@@ -5,4 +5,5 @@ import com.codecool.model.Directions;
 public interface Creature {
 
     Directions move();
+    int getSpeed();
 }
