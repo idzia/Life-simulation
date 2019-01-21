@@ -20,6 +20,7 @@ public class Simulation implements Runnable {
 
     public void run() {
         board.initialize(100,100);
+        board.populate();
         while(isRunning){
             isRunning = update();
             render();
@@ -27,7 +28,6 @@ public class Simulation implements Runnable {
     }
 
     private void render() {
-        //todo: implement
     }
 
     private boolean update() {

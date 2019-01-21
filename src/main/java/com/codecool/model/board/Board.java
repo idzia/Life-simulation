@@ -1,12 +1,29 @@
 package com.codecool.model.board;
 
 import com.codecool.model.Directions;
+import com.codecool.model.creature.Herbivore;
 
 public class Board {
+
      private Cell[][] board;
 
     public void initialize(int width,int height) {
-        this.board = new Cell[width][height];
+        this.board = new Cell[height][width];
+
+        for (int i = 0; i<height;i++){
+
+            for (int j = 0; j<width; j++){
+                board[i][j] = new Cell();
+            }
+        }
+    }
+
+    public void populate() {
+        board[0][0].setCreature(new Herbivore());
+    }
+
+    public Cell[][] getBoard(){
+        return board;
     }
 
     public Cell[][] getCellsFrom(int x,int y,int radius){
