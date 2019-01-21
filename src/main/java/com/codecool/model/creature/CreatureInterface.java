@@ -1,6 +1,6 @@
-package com.codecool.model.entity.creature;
+package com.codecool.model.creature;
 
-import com.codecool.model.entity.Directions;
+import com.codecool.model.Directions;
 
 public interface CreatureInterface {
 
