@@ -1,9 +1,10 @@
-package com.codecool.view;
+package com.codecool.view.terminalview;
 
 import com.codecool.model.board.Board;
 import com.codecool.model.board.Cell;
+import com.codecool.view.View;
 
-public class TerminalView implements View{
+public class TerminalView implements View {
     public void draw(Board board) {
 
         StringBuilder sb = new StringBuilder();
