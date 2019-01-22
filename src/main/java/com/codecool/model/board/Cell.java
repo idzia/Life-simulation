@@ -6,7 +6,7 @@ import com.codecool.model.creature.Creature;
 public class Cell {
     AbstractCreature currentCreature = null;
     int foodAmmount = 0;
-    boolean lock;// x2
+    boolean lock = false;// x2
 
     public AbstractCreature getCurrentCreature(){
         return currentCreature;
@@ -29,4 +29,18 @@ public class Cell {
     public void addFoodAmmount(int foodAmmount) {
         this.foodAmmount += foodAmmount;
     }
+
+    public void reduceFoodAmmount(int foodAmmount) {
+        this.foodAmmount -= foodAmmount;
+    }
+
+    public boolean isLock() {
+        return lock;
+    }
+
+    public void setLock(boolean lock) {
+        this.lock = lock;
+    }
+
 }
+

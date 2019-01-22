@@ -1,8 +1,6 @@
 package com.codecool.model.board;
 
-import com.codecool.model.Directions;
 import com.codecool.model.creature.Herbivore;
-
 import java.util.Random;
 
 public class Board {
@@ -49,11 +47,15 @@ public class Board {
 
     }
 
-    public Cell[][] getBoard(){
+    public Cell[][] getBoard() {
         return board;
     }
 
-    public Cell[][] getCellsFrom(int x,int y,int radius){
+    public Cell getCell(int x,int y) {
+        return board[y][x];
+    }
+
+    public Cell[][] getCellsFrom(int x,int y,int radius) {
         int h = 2 * radius + 1;
         int w = 2 * radius + 1;
         Cell[][] cellInRange = new Cell[h][w];
@@ -112,14 +114,31 @@ public class Board {
     }
 
 
-    public void removeFood(int x, int y) {
+    public void reduceFood(int x, int y) {
+        board[y][x].reduceFoodAmmount(1);
     }
 
-    public boolean lockCell(int x,int y) {
-        return true;
-        //todo: locking if not locked. otherwise return false
+    public boolean lockCell(Cell nextCell) {
+        if (!(nextCell.isLock())) {
+            nextCell.setLock(true);
+            return true;
+        }
+        return false;
+
+
     }
+
     public void unlockCells(){
+
+//        Arrays.stream(board).flatMap(Arrays::stream).map(cell -> cell.setLock(false));
+
+        for (int i = 0; i<height;i++){
+
+            for (int j = 0; j<width; j++){
+                board[i][j].setLock(false);
+            }
+        }
+
         //todo: unlock all cells (after turn)
     }
 
