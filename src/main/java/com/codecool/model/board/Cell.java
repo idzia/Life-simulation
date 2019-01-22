@@ -25,4 +25,8 @@ public class Cell {
     public void setCreature(AbstractCreature creature) {
         this.currentCreature = creature;
     }
+
+    public void addFoodAmmount(int foodAmmount) {
+        this.foodAmmount += foodAmmount;
+    }
 }

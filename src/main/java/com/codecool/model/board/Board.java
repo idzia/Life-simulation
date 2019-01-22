@@ -14,9 +14,12 @@ public class Board {
 
     public void initialize(int width,int height,int populateQuantity) {
         this.board = createBoard(width, height);
-        populate(width, height, populateQuantity);
         setWidth(width);
         setHeight(height);
+        int startFoodQuantity = 2*(width*height);
+
+        populate(width, height, populateQuantity);
+        setFood(startFoodQuantity);
     }
 
 
@@ -93,12 +96,22 @@ public class Board {
         return getCellsFrom(x,y,defaultRadius);
     }
 
-    public Cell getNextCell(int x, int y, Directions direction) {
-        return null;
+//    public Cell getNextCell(int x, int y, Directions direction) {
+//        return null;
+//    }
+
+    public void setFood(int foodQuantity){
+        Random generator = new Random();
+        for (int i=0; i<(foodQuantity); i++) {
+            addFood(generator.nextInt(width), generator.nextInt(height));
+        }
     }
 
-    public void addFood(int x, int y) {
+    private void addFood(int x, int y) {
+        board[y][x].addFoodAmmount(1);
     }
+
+
     public void removeFood(int x, int y) {
     }
 
