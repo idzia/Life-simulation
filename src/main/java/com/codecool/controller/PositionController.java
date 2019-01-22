@@ -14,52 +14,40 @@ public class PositionController {
         this.currentPosition = position;
     }
 
-    public void calculateDistance(Position position) {
-        int distance = 0;
-        List<Directions> direction = detrmineDirection(position);
-        distance = calculate(position, direction, distance);
-
-        System.out.println("FINAL dist: " + distance);
-
+    public int calculateDistance(Position position) {
+        return calculate(position, detrmineDirection(position), 0);
     }
 
     private List<Directions> detrmineDirection(Position position) {
         List<Directions> directions = new ArrayList<Directions>();
         directions.add(Directions.PASS);
         directions.add(Directions.PASS);
+        
         if (currentPosition.getX() - position.getX() > 0) {
             directions.set(0, Directions.W);
         }
         if (currentPosition.getX() - position.getX() < 0) {
             directions.set(0, Directions.E);
         }
-        if (currentPosition.getY() - position.getY() > 0) {
+        if (currentPosition.getY() - position.getY() < 0) {
             directions.set(1, Directions.S);
         }
-        if (currentPosition.getY() - position.getY() < 0) {
+        if (currentPosition.getY() - position.getY() > 0) {
             directions.set(1, Directions.N);
         }
         return directions;
     }
 
     private int calculate(Position position, List<Directions> direction, int distance) {
-
-        System.out.println("Current point: " + currentPosition.getX() + ", " + currentPosition.getY());
-        System.out.println("Point to move: " + position.getX() + ", " + position.getY());
-        System.out.println("Current distance: " + distance);
         String direct = direction.get(1).toString() + direction.get(0).toString();
-
-        System.out.println(direct);
 
         if (direct.equals("PASSPASS")) {
             return distance;
         }
         else if (direction.contains(Directions.PASS)) {
-            distance =+ (direction.get(0).equals(Directions.PASS )
-                    ? Math.abs(currentPosition.getX() - position.getX()) : Math.abs(currentPosition.getY() - position.getY()));
-
-            System.out.println("Final distance: " + distance);
-            return distance;
+            return distance += (direction.get(0).equals(Directions.PASS )
+                    ? Math.abs(currentPosition.getY() - position.getY())
+                    : Math.abs(currentPosition.getX() - position.getX()));
         }
         else if (direct.equals("NW")) {
             Position movedPosition = getSouthEastIndex(position);
@@ -67,9 +55,6 @@ public class PositionController {
         }
         else if (direct.equals("NE")) {
             Position movedPosition = getSouthWestIndex(position);
-
-            System.out.println("In NE mode, movedPos: x: " + movedPosition.getX() + " y: " + movedPosition.getY());
-
             return calculate(movedPosition, detrmineDirection(movedPosition), ++distance);
         }
         else if (direct.equals("SW")) {
@@ -140,12 +125,4 @@ public class PositionController {
         return pos;
     }
 
-    public static void main(String[] args) {
-        Position p = new Position(0,0);
-        PositionController p1 = new PositionController(p);
-
-
-        p1.calculateDistance(new Position(2,2));
-        //p1.calculateDistance(new Position(0,-1));
-    }
 }
