@@ -2,10 +2,18 @@ package com.codecool.model.creature;
 
 import com.codecool.model.creature.strategy.BehavioralStrategy;
 
-public class AbstractCreature {
+public abstract class AbstractCreature {
     private int energy = 100;
-    private BehavioralStrategy strategy;
+//    private BehavioralStrategy strategy;
     private int speed = 1;
+
+//    public AbstractCreature(BehavioralStrategy strategy){
+//        this.strategy = strategy;
+//    }
+
+    public AbstractCreature(){
+
+    }
 
     public int getEnergy() {
         return energy;
@@ -21,13 +29,13 @@ public class AbstractCreature {
         this.energy -= value;
     }
 
-    public BehavioralStrategy getStrategy() {
-        return strategy;
-    }
-
-    public void setStrategy(BehavioralStrategy strategy) {
-        this.strategy = strategy;
-    }
+//    public BehavioralStrategy getStrategy() {
+//        return strategy;
+//    }
+//
+//    public void setStrategy(BehavioralStrategy strategy) {
+//        this.strategy = strategy;
+//    }
 
     public int getSpeed() {
         return speed;
@@ -35,7 +43,5 @@ public class AbstractCreature {
 
 
 
-    public AbstractCreature(BehavioralStrategy strategy){
-        this.strategy = strategy;
-    }
+
 }
