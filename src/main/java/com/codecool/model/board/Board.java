@@ -11,6 +11,7 @@ public class Board {
      private int width;
      private int height;
 
+
     public void initialize(int width,int height,int populateQuantity) {
         this.board = createBoard(width, height);
         populate(width, height, populateQuantity);
@@ -29,6 +30,7 @@ public class Board {
         }
         return board;
     }
+
 
     private void populate(int width,int height,int quantity) {
         Random generator = new Random();
@@ -49,29 +51,42 @@ public class Board {
     }
 
     public Cell[][] getCellsFrom(int x,int y,int radius){
-        int h = radius * radius + 1;
-        int w = radius * radius + 1;
+        int h = 2 * radius + 1;
+        int w = 2 * radius + 1;
         Cell[][] cellInRange = new Cell[h][w];
+
         int radiusY = radius;
+
         for (int i = 0; i<h;i++){
+            int temporaryY = y-radiusY;
+            if (temporaryY < 0) {
+                temporaryY = height-radiusY;
+            } else if (temporaryY >= height) {
+                temporaryY = -1 - radiusY;
+            }
             int radiusX = radius;
+
+
             for (int j = 0; j<w; j++){
-                if((y-radiusY) <= height && (x-radiusX) <= width) {
-                    cellInRange[i][j] = board[y-radiusY][x-radiusX];
-                } else if ((y-radiusY) >= height && (x-radiusX) <= width) {
-                    cellInRange[i][j] = board[-1-radiusY][x-radiusX];
-                } else if ((y-radiusY) <= height && (x-radiusX) >= width) {
-                    cellInRange[i][j] = board[y-radiusY][-1-radiusX];
-                } else if ((y-radiusY) >= height && (x-radiusX) >= width) {
-                    cellInRange[i][j] = board[-1 - radiusY][-1 - radiusX];
+
+                int temporaryX = x-radiusX;
+                if (temporaryX < 0) {
+                    temporaryX = width-radiusX;
+                } else if (temporaryX >= width) {
+                    temporaryX = -1 - radiusX;
                 }
+
+                cellInRange[i][j] = board[temporaryY][temporaryX];
+
 
                 radiusX--;
             }
             radiusY--;
         }
+
         return cellInRange;
     }
+
 
     public Cell[][] getCellsFrom(int x,int y) {
         int defaultRadius = 2;
