@@ -1,8 +1,18 @@
 package com.codecool.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Position {
     private int x;
     private int y;
+
+    public Position() {}
+
+    public Position(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 
     public int getX() {
         return x;
@@ -19,4 +29,5 @@ public class Position {
     public void setY(int y) {
         this.y = y;
     }
+
 }
