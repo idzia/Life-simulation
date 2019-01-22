@@ -4,79 +4,52 @@ import com.codecool.model.Directions;
 import com.codecool.model.Position;
 import com.codecool.model.board.Board;
 import com.codecool.model.board.Cell;
-import com.codecool.model.creature.Creature;
-
 
 public class BoardController {
-    private Cell[][] board;
+    private Board board;
 
-    public boolean moveCreature(Board board, Position pos, Directions dir) {
-        this.board = board.getBoard();
-        Creature creature = this.board[pos.getY()][pos.getX()].getCurrentCreature();
-        Position currPos = new Position();
-        currPos.setX(pos.getX());
-        currPos.setY(pos.getY());
-
-        if (makeMove(pos, dir, creature.getSpeed())) {
-            Cell cell = this.board[currPos.getY()][currPos.getX()];
-            cell.setCreature(null);
-            cell.unlock();
-            cell = this.board[pos.getY()][pos.getX()];
-            cell.setCreature(creature);
-            cell.lock();
-            return true;
-        } else {
-            return false;
-        }
+    public BoardController(Board board) {
+        this.board = board;
     }
 
-//    private boolean isMoveValid(Board board, Position pos, Directions dir) { return false;}
-
-    private boolean makeMove(Position pos, Directions dir, int speed) {
-        while (speed > 0) {
-            switch (dir) {
-                case N: {
-                    moveNorth(pos);
-                    break;
-                }
-                case NE: {
-                    moveNorthEast(pos);
-                    break;
-                }
-                case NW: {
-                    moveNorthWest(pos);
-                    break;
-                }
-                case W: {
-                    moveWest(pos);
-                    break;
-                }
-                case E: {
-                    moveEast(pos);
-                    break;
-                }
-                case S: {
-                    moveSouth(pos);
-                    break;
-                }
-                case SE: {
-                    moveSouthEast(pos);
-                    break;
-                }
-                case SW: {
-                    moveSouthWest(pos);
-                    break;
-                }
-                default:
-                    return false;
+    public Cell getNextCell(Position pos, Directions dir) {
+        pos = getPositionOfCellInDirection(pos, dir);
+        return board.getBoard()[pos.getY()][pos.getX()];
+    }
+    
+    private Position getPositionOfCellInDirection(Position pos, Directions dir) throws IllegalArgumentException {
+        switch (dir) {
+            case N: {
+                return getNorthIndex(pos);
             }
-            handleBorder(pos);
-            speed--;
+            case NE: {
+                return getNorthEastIndex(pos);
+            }
+            case NW: {
+                return getNorthWestIndex(pos);
+            }
+            case W: {
+                return getWestIndex(pos);
+            }
+            case E: {
+                return getEastIndex(pos);
+            }
+            case S: {
+                return getSouthIndex(pos);
+            }
+            case SE: {
+                return getSouthEastIndex(pos);
+            }
+            case SW: {
+                return indexSouthWestIndex(pos);
+            }
+            default:
+                throw new IllegalArgumentException();
         }
-        return board[pos.getY()][pos.getX()].isLock();
     }
 
     private void handleBorder(Position pos) {
+        Cell[][] board = this.board.getBoard();
         int upperBorder = 0;
         int bottomBorder = board.length - 1;
         int rightBorder = board[0].length - 1;
@@ -95,51 +68,59 @@ public class BoardController {
         }
     }
 
-    private void moveNorth(Position pos) {
-        int y = pos.getY();
-        pos.setY(y--);
-    }
-
-    private void moveNorthEast(Position pos) {
-        int x = pos.getX();
-        int y = pos.getY();
-        pos.setX(x++);
-        pos.setY(y--);
-    }
-
-    private void moveNorthWest(Position pos) {
-        int x = pos.getX();
-        int y = pos.getY();
-        pos.setX(x--);
-        pos.setY(y--);
-    }
-
-    private void moveSouth(Position pos) {
-        int y = pos.getY();
-        pos.setY(y++);
-    }
-
-    private void moveSouthEast(Position pos) {
-        int x = pos.getX();
-        int y = pos.getY();
-        pos.setX(x++);
-        pos.setY(y++);
-    }
-
-    private void moveSouthWest(Position pos) {
+    private Position indexSouthWestIndex(Position pos) {
         int x = pos.getX();
         int y = pos.getY();
         pos.setX(x--);
         pos.setY(y++);
+        return pos;
     }
 
-    private void moveEast(Position pos) {
+    private Position getSouthEastIndex(Position pos) {
         int x = pos.getX();
-        pos.setX(x++);
+        int y = pos.getY();
+        pos.setX(++x);
+        pos.setY(++y);
+        return pos;
     }
 
-    private void moveWest(Position pos) {
+    private Position getSouthIndex(Position pos) {
+        int y = pos.getY();
+        pos.setY(++y);
+        return pos;
+    }
+
+    private Position getEastIndex(Position pos) {
         int x = pos.getX();
-        pos.setX(x--);
+        pos.setX(++x);
+        return pos;
+    }
+
+    private Position getWestIndex(Position pos) {
+        int x = pos.getX();
+        pos.setX(--x);
+        return pos;
+    }
+
+    private Position getNorthWestIndex(Position pos) {
+        int x = pos.getX();
+        int y = pos.getY();
+        pos.setX(--x);
+        pos.setY(--y);
+        return pos;
+    }
+
+    private Position getNorthEastIndex(Position pos) {
+        int x = pos.getX();
+        int y = pos.getY();
+        pos.setX(++x);
+        pos.setY(--y);
+        return pos;
+    }
+
+    private Position getNorthIndex(Position pos) {
+        int y = pos.getY();
+        pos.setY(--y);
+        return pos;
     }
 }
