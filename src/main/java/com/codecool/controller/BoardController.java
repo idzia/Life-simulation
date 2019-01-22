@@ -71,8 +71,8 @@ public class BoardController {
     private Position indexSouthWestIndex(Position pos) {
         int x = pos.getX();
         int y = pos.getY();
-        pos.setX(x--);
-        pos.setY(y++);
+        pos.setX(--x);
+        pos.setY(--y);
         return pos;
     }
 
