@@ -1,19 +1,18 @@
-package com.codecool.controller;
+package com.codecool.model.board;
 
 import com.codecool.model.Directions;
 import com.codecool.model.Position;
-import com.codecool.model.board.Board;
-import com.codecool.model.board.Cell;
 
-public class BoardController {
+class BoardHelper {
     private Board board;
 
-    public BoardController(Board board) {
+    BoardHelper(Board board) {
         this.board = board;
     }
 
-    public Cell getNextCell(Position pos, Directions dir) {
+    Cell getNextCell(Position pos, Directions dir) {
         pos = getPositionOfCellInDirection(pos, dir);
+        handleBorder(pos);
         return board.getBoard()[pos.getY()][pos.getX()];
     }
     

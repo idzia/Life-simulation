@@ -1,6 +1,5 @@
 package com.codecool.model.board;
 
-import com.codecool.controller.BoardController;
 import com.codecool.model.Directions;
 import com.codecool.model.Position;
 import com.codecool.model.creature.Herbivore;
@@ -8,7 +7,7 @@ import com.codecool.model.creature.Herbivore;
 public class Board {
 
      private Cell[][] board;
-     private BoardController boardController;
+     private BoardHelper boardHelper;
 
     public void initialize(int width,int height) {
         this.board = new Cell[height][width];
@@ -20,7 +19,7 @@ public class Board {
             }
         }
 
-        this.boardController = new BoardController(this);
+        this.boardHelper = new BoardHelper(this);
     }
 
     public void populate() {
@@ -45,7 +44,7 @@ public class Board {
         Position pos = new Position();
         pos.setY(row);
         pos.setX(column);
-        return boardController.getNextCell(pos, direction);
+        return boardHelper.getNextCell(pos, direction);
     }
 
     public void moveCreature(int column, int row, Directions direction) {
@@ -53,7 +52,7 @@ public class Board {
         pos.setY(row);
         pos.setX(column);
         Cell current = board[row][column];
-        Cell target = boardController.getNextCell(pos, direction);
+        Cell target = boardHelper.getNextCell(pos, direction);
         swapCells(current, target);
     }
 
