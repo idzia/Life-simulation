@@ -1,13 +1,14 @@
 package com.codecool.model.board;
 
+import com.codecool.model.creature.AbstractCreature;
 import com.codecool.model.creature.Creature;
 
 public class Cell {
-    Creature currentCreature = null;
+    AbstractCreature currentCreature = null;
     int foodAmmount = 0;
     boolean lock;// x2
 
-    public Creature getCurrentCreature(){
+    public AbstractCreature getCurrentCreature(){
         return currentCreature;
     }
     public int getFoodAmmount(){
@@ -21,7 +22,7 @@ public class Cell {
         this.lock = false;
     }
 
-    public void setCreature(Creature creature) {
+    public void setCreature(AbstractCreature creature) {
         this.currentCreature = creature;
     }
 }
