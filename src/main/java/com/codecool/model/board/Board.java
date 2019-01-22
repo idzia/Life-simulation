@@ -1,11 +1,13 @@
 package com.codecool.model.board;
 
 import com.codecool.model.Directions;
+import com.codecool.model.Position;
 import com.codecool.model.creature.Herbivore;
 
 public class Board {
 
      private Cell[][] board;
+     private BoardHelper boardHelper;
 
     public void initialize(int width,int height) {
         this.board = new Cell[height][width];
@@ -16,6 +18,8 @@ public class Board {
                 board[i][j] = new Cell();
             }
         }
+
+        this.boardHelper = new BoardHelper(this);
     }
 
     public void populate() {
@@ -36,8 +40,26 @@ public class Board {
         return getCellsFrom(x,y,defaultRadius);
     }
 
-    public Cell getNextCell(int x, int y, Directions direction) {
-        return null;
+    public Cell getNextCell(int column, int row, Directions direction) {
+        Position pos = new Position();
+        pos.setY(row);
+        pos.setX(column);
+        return boardHelper.getNextCell(pos, direction);
+    }
+
+    public void moveCreature(int column, int row, Directions direction) {
+        Position pos = new Position();
+        pos.setY(row);
+        pos.setX(column);
+        Cell current = board[row][column];
+        Cell target = boardHelper.getNextCell(pos, direction);
+        swapCells(current, target);
+    }
+
+    private void swapCells(Cell current, Cell target) {
+        // todo: set creature pos
+        target.setCreature(current.getCurrentCreature());
+        current.setCreature(null);
     }
 
     public void addFood(int x, int y) {
