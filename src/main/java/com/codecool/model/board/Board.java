@@ -2,7 +2,10 @@ package com.codecool.model.board;
 
 import com.codecool.model.Directions;
 import com.codecool.model.Position;
+
+import com.codecool.model.creature.Creature;
 import com.codecool.model.creature.Herbivore;
+import javafx.geometry.Pos;
 
 import java.util.Random;
 
@@ -40,7 +43,12 @@ public class Board {
             int y = generator.nextInt(height);
             int x = generator.nextInt(width);
             if (board[y][x].getCurrentCreature() == null) {
-                board[y][x].setCreature(new Herbivore());
+                Creature creature = new Herbivore();
+                Position p = new Position();
+                p.setY(y);
+                p.setX(x);
+                ((Herbivore) creature).setPosition(p);
+                board[y][x].setCreature(creature);
                 i++;
             }
         }
@@ -88,17 +96,15 @@ public class Board {
         return boardHelper.getNextCell(pos, direction);
     }
 
-    public void moveCreature(int column, int row, Directions direction) {
-        Position pos = new Position();
-        pos.setY(row);
-        pos.setX(column);
-        Cell current = board[row][column];
-        Cell target = boardHelper.getNextCell(pos, direction);
-        swapCells(current, target);
+    public void moveCreature(Position currentPos, Directions direction) {
+        Cell currentCell = board[currentPos.getY()][currentPos.getX()];
+        Position targetPosition = boardHelper.getPositionOfCellInDirection(currentPos, direction);
+        Cell target = board[targetPosition.getY()][targetPosition.getX()];
+        currentCell.getCurrentCreature().setPosition(targetPosition);
+        swapCells(currentCell, target);
     }
 
     private void swapCells(Cell current, Cell target) {
-        // todo: set creature pos
         target.setCreature(current.getCurrentCreature());
         current.setCreature(null);
     }
