@@ -40,13 +40,12 @@ public class PositionController {
                 }
             }
         }
-        
+
         for (Directions dir : Directions.values()) {
             if (dir.equals(directions.get(SN).toString() + directions.get(WE).toString())) {
                 return dir;
             }
         }
-
 
         return Directions.PASS;
     }
