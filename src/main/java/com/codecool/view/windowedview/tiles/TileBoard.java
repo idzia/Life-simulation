@@ -19,8 +19,8 @@ public class TileBoard {
     public TileBoard(Board board, WindowHandler handler){
 
         this.handler = handler;
-        this.width = 100;
-        this.height = 100;
+        this.width = 10;
+        this.height = 10;
         this.board = board;
     }
 
@@ -59,7 +59,7 @@ public class TileBoard {
 
     private int getIntRepresentationOfCreature(Creature currentCreature) {
     if(currentCreature == null)                  return 0;
-    if(currentCreature.toString().equals("H"))    return 1;
+    if(currentCreature instanceof Herbivore)    return 1;
                                                 return 2;
     }
 

@@ -18,9 +18,13 @@ public class Simulation implements Runnable {
 
     }
 
+    public Simulation(View view, Board board) {
+        this.board = board;
+        this.view = view;
+    }
+
     public void run() {
-        board.initialize(100,100);
-        board.populate();
+
         while(isRunning){
             isRunning = update();
             render();
@@ -32,6 +36,5 @@ public class Simulation implements Runnable {
 
     private boolean update() {
         return true;
-       //todo: notifyAll();
     }
 }
