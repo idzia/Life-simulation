@@ -19,26 +19,9 @@ public abstract class AbstractCreature extends Thread {
     }
 
     public void move() {
-
-        //1wytnij czesc boardu
-        //zapytaj strategie
-        //manager?
-        //jesli nie mozesz. to chuj
     }
 
-    @Override
-    public void run() {
-        while(!this.isDead()){
-            while(!this.isDoneMove()){
-                move();
-            }
-        }
-    }
-    public void onNotify(){
-        this.starve();
-        this.setDoneMove(false);
 
-    }
 
     public void starve(int value){
         this.energy -= value;

@@ -13,6 +13,7 @@ import java.util.Set;
 public class ThreadsManager implements Subscriber {
     private Board board;
     Set<Creature> creatures;
+    BoardObserver boardObserver;
 
     public ThreadsManager(Board board) {
         this.board = board;
@@ -25,7 +26,7 @@ public class ThreadsManager implements Subscriber {
     void removeDeadCreatures(){
         //todo killthem all(remove dead threads)
     }
-    synchronized boolean moveCreature(Creature creature, Directions direction){
+    public synchronized boolean moveCreature(Creature creature, Directions direction){
         Position current = creature.getPosition();
         Cell target = this.board.getNextCell(current.getX(), current.getY(), direction);
         if (target.isLock()) {
@@ -47,5 +48,10 @@ public class ThreadsManager implements Subscriber {
     @Override
     public void onNotify() {
         removeDeadCreatures();
+    }
+
+    @Override
+    public void Subscribe(BoardObserver boardObserver) {
+        this.boardObserver = boardObserver;
     }
 }

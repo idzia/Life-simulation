@@ -10,6 +10,7 @@ public class Tile implements TileInterface {
     protected BufferedImage background = Assets.ground;
     protected BufferedImage food;
     protected BufferedImage creature;
+    protected BufferedImage LOCK = Assets.predator;
 
     public Tile(int foodQuantity, int creatureType){
 
@@ -72,6 +73,7 @@ public class Tile implements TileInterface {
         g.drawImage(background, x, y, TILEWIDTH, TILEHEIGHT, null);
         g.drawImage(food, x, y, TILEWIDTH, TILEHEIGHT, null);
         g.drawImage(creature, x, y, TILEWIDTH, TILEHEIGHT, null);
+        //g.drawImage(LOCK,x,y, TILEWIDTH, TILEHEIGHT, null);
 
 
     }

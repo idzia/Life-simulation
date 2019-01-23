@@ -1,11 +1,14 @@
 package com.codecool.model.board;
 
+import com.codecool.controller.ThreadsManager;
 import com.codecool.model.Directions;
 import com.codecool.model.creature.Herbivore;
 import com.codecool.model.Position;
 import com.codecool.model.creature.Creature;
-import com.codecool.model.creature.strategy.ConcreteStrategyDummy;
+import com.codecool.model.creature.strategy.HerbivoreBehavioralStrategy;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Board {
@@ -22,7 +25,6 @@ public class Board {
         setHeight(height);
         int startFoodQuantity = 2 * (width * height);
 
-        populate(width, height, populateQuantity);
         setFood(startFoodQuantity);
         this.boardHelper = new BoardHelper(this);
     }
@@ -39,23 +41,20 @@ public class Board {
         return board;
     }
 
-    private void populate(int width, int height, int quantity) {
+    public void populate(List<Creature> creatures) {
         Random generator = new Random();
-        int i = 0;
-        while (i < quantity) {
+        for (Creature creature : creatures) {
             int y = generator.nextInt(height);
             int x = generator.nextInt(width);
             if (board[y][x].getCurrentCreature() == null) {
-                Creature creature = new Herbivore(new ConcreteStrategyDummy());
                 Position p = new Position();
                 p.setY(y);
                 p.setX(x);
-                ((Herbivore) creature).setPosition(p);
+                creature.setPosition(p);
+
                 board[y][x].setCreature(creature);
-                i++;
             }
         }
-
     }
 
     public Cell[][] getBoard() {

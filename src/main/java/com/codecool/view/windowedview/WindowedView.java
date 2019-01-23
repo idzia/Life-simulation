@@ -11,9 +11,6 @@ public class WindowedView implements View  {
     public WindowedView(Board board){
         Assets.init();
         runnable = new WindowRunnable(board,"Life-Simulator", 640,640);
-
-    }
-    public void draw(Board board) {
         runnable.start();
 
     }

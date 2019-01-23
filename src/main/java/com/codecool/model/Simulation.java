@@ -1,31 +1,45 @@
 package com.codecool.model;
 
 import com.codecool.controller.BoardObserver;
+import com.codecool.controller.ThreadsManager;
 import com.codecool.model.board.Board;
+import com.codecool.model.creature.Creature;
+import com.codecool.model.creature.CreatureFactory;
 import com.codecool.view.View;
+import com.codecool.view.windowedview.WindowedView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Simulation implements Runnable {
     private View view;
     private Board board;
     private BoardObserver observer;
     private boolean isRunning = true;
+    private CreatureFactory creatureFactory;
+    private ThreadsManager threadsManager;
 
-    public Simulation(View view){
+    public Simulation(){
         this.isRunning = true;
-        this.view = view;
         this.board = new Board();
         this.observer = new BoardObserver();
 
+
     }
 
-    public Simulation(View view, Board board) {
-        this.board = board;
-        this.view = view;
-    }
 
     public void run() {
+        this.view = new WindowedView(board);
+        this.threadsManager = new ThreadsManager(this.board);
+        this.creatureFactory = new CreatureFactory(this.threadsManager);
+         this.observer = new BoardObserver();
+        List<Creature> creatures = this.creatureFactory.getCreatures(4);
+        this.observer.subscribe(new ArrayList<>(creatures));
+        board.initialize(10,10, 4);
+        board.populate(creatures);
+        this.observer.init();
 
-        board.initialize(10,10,4);
+
 
         int fps = 1; //1x per sec
         double timePerTick = 1000000000 / fps;
@@ -59,7 +73,7 @@ public class Simulation implements Runnable {
         //check if at least one creature is alive if not return nope
         //redistribute food
         //notifyall(turn)
-
+        observer.shout();
         return true;
     }
 }
