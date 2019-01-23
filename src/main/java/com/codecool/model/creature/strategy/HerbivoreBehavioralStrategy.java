@@ -11,14 +11,14 @@ public class HerbivoreBehavioralStrategy implements BehavioralStrategy {
 
     private Cell[][] herbivoreSight;
     private PositionController positionController;
-    private Map<Cell, int> targets;
+    private Map<Cell, Integer> targets;
 
     public void getBoardView(Cell[][] board) {
         this.herbivoreSight = board;
     }
 
     public void getCoordinates(Position currentPosition) {
-        this.positionController.setCurrentPosition() = currentPosition;
+        this.positionController.setCurrentPosition(currentPosition);
     }
 
     private void findTargets() {
@@ -45,6 +45,7 @@ public class HerbivoreBehavioralStrategy implements BehavioralStrategy {
         if (targets.size() > 0) {
             return chooseClosest();
         }
+        return Directions.PASS;
     }
 
     private Directions chooseClosest() {
@@ -54,7 +55,7 @@ public class HerbivoreBehavioralStrategy implements BehavioralStrategy {
     }
 
     private Cell getCellByDiastance(int distance) {
-        for (Map.Entry<Cell, int> entry : targets.entrySet()) {
+        for (Map.Entry<Cell, Integer> entry : targets.entrySet()) {
             if (entry.getValue() == distance) {
                 return entry.getKey();
             }
