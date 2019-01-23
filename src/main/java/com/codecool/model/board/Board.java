@@ -4,6 +4,7 @@ import com.codecool.model.Directions;
 import com.codecool.model.creature.Herbivore;
 import com.codecool.model.Position;
 import com.codecool.model.creature.Creature;
+import com.codecool.model.creature.strategy.ConcreteStrategyDummy;
 
 import java.util.Random;
 
@@ -45,7 +46,7 @@ public class Board {
             int y = generator.nextInt(height);
             int x = generator.nextInt(width);
             if (board[y][x].getCurrentCreature() == null) {
-                Creature creature = new Herbivore();
+                Creature creature = new Herbivore(new ConcreteStrategyDummy());
                 Position p = new Position();
                 p.setY(y);
                 p.setX(x);
@@ -169,5 +170,9 @@ public class Board {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public Cell[][] getCellsFrom(Position position) {
+        return getCellsFrom(position.getX(), position.getY());
     }
 }
