@@ -8,4 +8,6 @@ public interface Creature extends Subscriber {
     void move();
     Position getPosition();
     void setPosition(Position pos);
+    boolean isDead();
+    void interrupt();
 }

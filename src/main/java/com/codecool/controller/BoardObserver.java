@@ -27,10 +27,10 @@ public class BoardObserver implements Observer {
         }
     }
 
-    //@Override
-    //public void unsubscribe(Subscriber subscriber) {
-        //this.subscribers.remove(subscriber);
-    //}
+    @Override
+    public void unsubscribe(Subscriber subscriber) {
+        this.subscribers.remove(subscriber);
+    }
 
     @Override
     public void shout() {
@@ -42,7 +42,6 @@ public class BoardObserver implements Observer {
     public void init() {
         for(Subscriber sub : subscribers){
             if(sub instanceof Creature) new Thread((AbstractCreature)sub).start();
-            sub.Subscribe(this);
         }
     }
 }

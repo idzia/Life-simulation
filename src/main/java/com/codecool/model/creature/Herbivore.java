@@ -6,9 +6,6 @@ import com.codecool.model.Directions;
 import com.codecool.model.creature.strategy.BehavioralStrategy;
 
 public class Herbivore extends AbstractCreature implements Creature {
-    BoardObserver boardObserver;
-
-
 
     public Herbivore(BehavioralStrategy strategy, ThreadsManager tm) {
         super(strategy,tm);
@@ -36,12 +33,5 @@ public class Herbivore extends AbstractCreature implements Creature {
     public void onNotify(){
         this.starve();
         this.setDoneMove(false);
-        System.out.println(this.toString()+"nowa tura");
     }
-
-    @Override
-    public void Subscribe(BoardObserver boardObserver) {
-        this.boardObserver = boardObserver;
-    }
-
 }

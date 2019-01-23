@@ -34,6 +34,7 @@ public class Simulation implements Runnable {
         this.creatureFactory = new CreatureFactory(this.threadsManager);
          this.observer = new BoardObserver();
         List<Creature> creatures = this.creatureFactory.getCreatures(4);
+        this.observer.subscribe(threadsManager);
         this.observer.subscribe(new ArrayList<>(creatures));
         board.initialize(10,10, 4);
         board.populate(creatures);
