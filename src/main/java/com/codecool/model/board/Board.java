@@ -43,17 +43,19 @@ public class Board {
 
     public void populate(List<Creature> creatures) {
         Random generator = new Random();
+        int x = generator.nextInt(width);
+        int y = generator.nextInt(height);
         for (Creature creature : creatures) {
-            int y = generator.nextInt(height);
-            int x = generator.nextInt(width);
-            if (board[y][x].getCurrentCreature() == null) {
-                Position p = new Position();
-                p.setY(y);
-                p.setX(x);
-                creature.setPosition(p);
-
-                board[y][x].setCreature(creature);
+            while (board[y][x].getCurrentCreature() != null) {
+                y = generator.nextInt(height);
+                x = generator.nextInt(width);
             }
+            Position p = new Position();
+            p.setY(y);
+            p.setX(x);
+            creature.setPosition(p);
+            System.out.println(creature + "random: " + p + " pos: " + creature.getPosition());
+            board[y][x].setCreature(creature);
         }
     }
 

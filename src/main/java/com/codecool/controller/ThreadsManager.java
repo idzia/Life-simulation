@@ -14,8 +14,6 @@ import java.util.Set;
 
 public class ThreadsManager implements Subscriber {
     private Board board;
-//    Set<Creature> creatures;
-private BoardObserver boardObserver;
 
     public ThreadsManager(Board board) {
         this.board = board;
@@ -23,6 +21,12 @@ private BoardObserver boardObserver;
 
     public Cell[][] cutBoard(Creature creature) {
         return board.getCellsFrom(creature.getPosition());
+    }
+
+    public Boolean isMoveValidLocked(Creature creature, Directions direction) {
+        Position pos = creature.getPosition();
+        Cell target = board.getNextCell(pos.getX(), pos.getY(), direction);
+        return !target.isLock() || target.getCurrentCreature() != null;
     }
 
     private void removeDeadCreatures(){
@@ -47,14 +51,6 @@ private BoardObserver boardObserver;
             return true;
         }
     }
-    
-
-//    void addCreature(Creature creature){
-//        creatures.add(creature);
-//    }
-//    void addCreatures(List<Creature> creaturesList){
-//        creatures.addAll(creaturesList);
-//    }
 
     @Override
     public void onNotify() {

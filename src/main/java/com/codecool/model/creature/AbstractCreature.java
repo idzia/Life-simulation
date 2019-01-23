@@ -5,7 +5,7 @@ import com.codecool.model.Directions;
 import com.codecool.model.Position;
 import com.codecool.model.creature.strategy.BehavioralStrategy;
 
-public abstract class AbstractCreature extends Thread {
+public abstract class AbstractCreature extends Thread implements Creature{
     private int energy = 100;
     private int energyPerFood = 15;
     private Position position;
@@ -19,9 +19,31 @@ public abstract class AbstractCreature extends Thread {
     }
 
     public void move() {
+        Directions direction = Directions.S;
+        if (manager.isMoveValidLocked(this, direction)) {
+            manager.moveCreature(this, direction);
+            this.setDoneMove(true);
+        }
     }
 
+    @Override
+    public void run() {
+        while (!this.isDead()) {
+            while (!this.isDoneMove()) {
+                move();
+            }
+            try {
+                sleep(0); //WTF
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
+    public void onNotify(){
+        this.starve();
+        this.setDoneMove(false);
+    }
 
     public void starve(int value){
         this.energy -= value;
