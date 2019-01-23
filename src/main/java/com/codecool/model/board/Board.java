@@ -119,9 +119,11 @@ public class Board {
     public void moveCreature(Position currentPos, Directions direction) {
         Cell currentCell = board[currentPos.getY()][currentPos.getX()];
         Position targetPosition = boardHelper.getPositionOfCellInDirection(currentPos, direction);
-        Cell target = board[targetPosition.getY()][targetPosition.getX()];
-        currentCell.getCurrentCreature().setPosition(targetPosition);
-        swapCells(currentCell, target);
+        if (targetPosition != currentPos) {
+            Cell target = board[targetPosition.getY()][targetPosition.getX()];
+            currentCell.getCurrentCreature().setPosition(targetPosition);
+            swapCells(currentCell, target);
+        }
     }
 
 

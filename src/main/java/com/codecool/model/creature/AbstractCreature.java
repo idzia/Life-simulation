@@ -19,7 +19,7 @@ public abstract class AbstractCreature extends Thread implements Creature{
     }
 
     public void move() {
-        Directions direction = Directions.S;
+        Directions direction = Directions.E;
         if (manager.isMoveValidLocked(this, direction)) {
             manager.moveCreature(this, direction);
             this.setDoneMove(true);
