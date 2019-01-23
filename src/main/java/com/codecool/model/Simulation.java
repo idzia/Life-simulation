@@ -25,6 +25,7 @@ public class Simulation implements Runnable {
 
     public void run() {
 
+        board.initialize(10,10,2);
         while(isRunning){
             isRunning = update();
             render();
