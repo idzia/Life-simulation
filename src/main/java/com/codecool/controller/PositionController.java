@@ -18,11 +18,44 @@ public class PositionController {
         return calculate(position, detrmineDirection(position), 0);
     }
 
+    public Position getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public void setCurrentPosition(Position currentPosition) {
+        this.currentPosition = currentPosition;
+    }
+
+    public Directions getDirections(Position position) {
+
+        int WE = 0;
+        int SN = 1;
+
+        List<Directions> directions = detrmineDirection(position);
+
+        if (directions.contains(Directions.PASS)) {
+            for (Directions dir : directions) {
+                if (!dir.equals(Directions.PASS)) {
+                    return dir;
+                }
+            }
+        }
+        
+        for (Directions dir : Directions.values()) {
+            if (dir.equals(directions.get(SN).toString() + directions.get(WE).toString())) {
+                return dir;
+            }
+        }
+
+
+        return Directions.PASS;
+    }
+
     private List<Directions> detrmineDirection(Position position) {
         List<Directions> directions = new ArrayList<Directions>();
         directions.add(Directions.PASS);
         directions.add(Directions.PASS);
-        
+
         if (currentPosition.getX() - position.getX() > 0) {
             directions.set(0, Directions.W);
         }
