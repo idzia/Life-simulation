@@ -65,6 +65,6 @@ public class HerbivoreBehavioralStrategy implements BehavioralStrategy {
 
     public Directions suggestMove() {
         findTargets();
-        return chooseClosest();
+        return chooseTarget();
     }
 }
