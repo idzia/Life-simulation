@@ -3,9 +3,9 @@ package com.codecool.model.board;
 import com.codecool.model.creature.Creature;
 
 public class Cell {
-    Creature currentCreature = null;
-    int foodAmmount = 0;
-    boolean lock;// x2
+    private Creature currentCreature = null;
+    private int foodAmmount = 0;
+    private boolean lock = false;// x2
 
     public Creature getCurrentCreature(){
         return currentCreature;
@@ -24,4 +24,22 @@ public class Cell {
     public void setCreature(Creature creature) {
         this.currentCreature = creature;
     }
+
+    public void addFoodAmmount(int foodAmmount) {
+        this.foodAmmount += foodAmmount;
+    }
+
+    public void reduceFoodAmmount(int foodAmmount) {
+        this.foodAmmount -= foodAmmount;
+    }
+
+    public boolean isLock() {
+        return lock;
+    }
+
+    public void setLock(boolean lock) {
+        this.lock = lock;
+    }
+
 }
+
