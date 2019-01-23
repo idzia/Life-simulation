@@ -47,6 +47,7 @@ public class ThreadsManager implements Subscriber {
         if (target.isLock()) {
             return false;
         } else {
+            this.board.getNextCell(current.getX(), current.getY(), direction).lock();
             this.board.moveCreature(current, direction);
             return true;
         }

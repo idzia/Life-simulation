@@ -161,7 +161,9 @@ public class Board {
         for (int i = 0; i < height; i++) {
 
             for (int j = 0; j < width; j++) {
-                board[i][j].setLock(false);
+                if (board[i][j].getCurrentCreature() == null) {
+                    board[i][j].setLock(false);
+                }
             }
         }
     }
