@@ -1,9 +1,11 @@
 package com.codecool.model.creature;
 
+import com.codecool.model.Position;
 import com.codecool.model.creature.strategy.BehavioralStrategy;
 
 public abstract class AbstractCreature {
     private int energy = 100;
+    Position position;
 //    private BehavioralStrategy strategy;
     private int speed = 1;
 
@@ -41,7 +43,11 @@ public abstract class AbstractCreature {
         return speed;
     }
 
+    public Position getPosition() {
+        return position;
+    }
 
-
-
+    public void setPosition(Position position) {
+        this.position = position;
+    }
 }
