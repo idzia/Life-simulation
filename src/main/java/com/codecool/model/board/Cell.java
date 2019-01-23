@@ -1,11 +1,21 @@
 package com.codecool.model.board;
 
+import com.codecool.model.Position;
 import com.codecool.model.creature.Creature;
 
 public class Cell {
     private Creature currentCreature = null;
     private int foodAmmount = 0;
     private boolean lock;// x2
+    private Position position;
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
 
     public Creature getCurrentCreature(){
         return currentCreature;
