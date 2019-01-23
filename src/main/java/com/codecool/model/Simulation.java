@@ -33,7 +33,7 @@ public class Simulation implements Runnable {
         this.threadsManager = new ThreadsManager(this.board);
         this.creatureFactory = new CreatureFactory(this.threadsManager);
          this.observer = new BoardObserver();
-        List<Creature> creatures = this.creatureFactory.getCreatures(4);
+        List<Creature> creatures = this.creatureFactory.getCreatures(2);
         this.observer.subscribe(threadsManager);
         this.observer.subscribe(new ArrayList<>(creatures));
         board.initialize(10,10, 1);
@@ -67,14 +67,13 @@ public class Simulation implements Runnable {
                 timer = 0;
             }
         }
+        System.out.println("finnish");
     }
 
     private boolean update() {
         //todo:
-        //check if at least one creature is alive if not return nope
         //redistribute food
-        //notifyall(turn)
         observer.shout();
-        return true;
+        return observer.isAliveCreature();
     }
 }

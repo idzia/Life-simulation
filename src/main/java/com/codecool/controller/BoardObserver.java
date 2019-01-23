@@ -39,6 +39,18 @@ public class BoardObserver implements Observer {
         }
     }
 
+    @Override
+    public boolean isAliveCreature() {
+        for (Subscriber s : subscribers) {
+            if (s instanceof Creature) {
+                if (!((Creature) s).isDead()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void init() {
         for(Subscriber sub : subscribers){
             if(sub instanceof Creature) new Thread((AbstractCreature)sub).start();

@@ -5,8 +5,10 @@ import com.codecool.model.Directions;
 import com.codecool.model.Position;
 import com.codecool.model.creature.strategy.BehavioralStrategy;
 
+import java.util.Random;
+
 public abstract class AbstractCreature extends Thread implements Creature{
-    private int energy = 100;
+    private int energy = 5;
     private int energyPerFood = 15;
     private Position position;
     private BehavioralStrategy strategy;
@@ -17,9 +19,25 @@ public abstract class AbstractCreature extends Thread implements Creature{
         this.strategy = strategy;
         this.manager = manager;
     }
+    private Directions getRandomDirection() {
+        Random random = new Random();
+        switch (random.nextInt(4)) {
+            case 0:
+                return Directions.N;
+            case 1:
+                return Directions.E;
+            case 2:
+                return Directions.W;
+            case 3:
+                return Directions.S;
+            default:
+                    return Directions.PASS;
+        }
+    }
 
     public void move() {
-        Directions direction = Directions.E;
+
+        Directions direction = getRandomDirection();
         if (manager.isMoveValidLocked(this, direction)) {
             manager.moveCreature(this, direction);
             this.setDoneMove(true);

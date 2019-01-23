@@ -9,4 +9,5 @@ public interface Observer {
     void unsubscribe(Subscriber subscriber);
     void shout();
 
+    boolean isAliveCreature();
 }
