@@ -1,15 +1,12 @@
 package com.codecool.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Position {
     private int x;
     private int y;
 
     public Position() {}
 
-    public Position(int x, int y) {
+    public Position(int y, int x) {
         this.x = x;
         this.y = y;
     }
@@ -30,4 +27,11 @@ public class Position {
         this.y = y;
     }
 
+    @Override
+    public String toString() {
+        return "Position{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }

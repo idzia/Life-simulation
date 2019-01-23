@@ -12,39 +12,56 @@ class BoardHelper {
 
     Cell getNextCell(Position pos, Directions dir) {
         pos = getPositionOfCellInDirection(pos, dir);
-        handleBorder(pos);
         return board.getBoard()[pos.getY()][pos.getX()];
     }
     
-    private Position getPositionOfCellInDirection(Position pos, Directions dir) throws IllegalArgumentException {
+    Position getPositionOfCellInDirection(Position pos, Directions dir) throws IllegalArgumentException {
+        Position newPos = new Position(pos.getY(), pos.getX());
         switch (dir) {
             case N: {
-                return getNorthIndex(pos);
+                getNorthIndex(newPos);
+                handleBorder(newPos);
+                break;
             }
             case NE: {
-                return getNorthEastIndex(pos);
+                getNorthEastIndex(newPos);
+                handleBorder(newPos);
+                break;
             }
             case NW: {
-                return getNorthWestIndex(pos);
+                getNorthWestIndex(newPos);
+                handleBorder(newPos);
+                break;
             }
             case W: {
-                return getWestIndex(pos);
+                getWestIndex(newPos);
+                handleBorder(newPos);
+                break;
             }
             case E: {
-                return getEastIndex(pos);
+                getEastIndex(newPos);
+                handleBorder(newPos);
+                break;
             }
             case S: {
-                return getSouthIndex(pos);
+                getSouthIndex(newPos);
+                handleBorder(newPos);
+                break;
             }
             case SE: {
-                return getSouthEastIndex(pos);
+                getSouthEastIndex(newPos);
+                handleBorder(newPos);
+                break;
             }
             case SW: {
-                return indexSouthWestIndex(pos);
+                indexSouthWestIndex(newPos);
+                handleBorder(newPos);
+                break;
             }
             default:
                 throw new IllegalArgumentException();
         }
+        return newPos;
     }
 
     private void handleBorder(Position pos) {
@@ -67,59 +84,51 @@ class BoardHelper {
         }
     }
 
-    private Position indexSouthWestIndex(Position pos) {
+    private void indexSouthWestIndex(Position pos) {
         int x = pos.getX();
         int y = pos.getY();
         pos.setX(--x);
         pos.setY(--y);
-        return pos;
     }
 
-    private Position getSouthEastIndex(Position pos) {
+    private void getSouthEastIndex(Position pos) {
         int x = pos.getX();
         int y = pos.getY();
         pos.setX(++x);
         pos.setY(++y);
-        return pos;
     }
 
-    private Position getSouthIndex(Position pos) {
+    private void getSouthIndex(Position pos) {
         int y = pos.getY();
         pos.setY(++y);
-        return pos;
     }
 
-    private Position getEastIndex(Position pos) {
+    private void getEastIndex(Position pos) {
         int x = pos.getX();
         pos.setX(++x);
-        return pos;
     }
 
-    private Position getWestIndex(Position pos) {
+    private void getWestIndex(Position pos) {
         int x = pos.getX();
         pos.setX(--x);
-        return pos;
     }
 
-    private Position getNorthWestIndex(Position pos) {
+    private void getNorthWestIndex(Position pos) {
         int x = pos.getX();
         int y = pos.getY();
         pos.setX(--x);
         pos.setY(--y);
-        return pos;
     }
 
-    private Position getNorthEastIndex(Position pos) {
+    private void getNorthEastIndex(Position pos) {
         int x = pos.getX();
         int y = pos.getY();
         pos.setX(++x);
         pos.setY(--y);
-        return pos;
     }
 
-    private Position getNorthIndex(Position pos) {
+    private void getNorthIndex(Position pos) {
         int y = pos.getY();
         pos.setY(--y);
-        return pos;
     }
 }
