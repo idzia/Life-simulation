@@ -12,13 +12,30 @@ public class HerbivoreBehavioralStrategy implements BehavioralStrategy {
     private Cell[][] herbivoreSight;
     private PositionController positionController;
     private Map<Cell, Integer> targets;
+    private final Random rand;
 
-    public void getBoardView(Cell[][] board) {
+    private static final List<Directions> VALUES =
+            Collections.unmodifiableList(Arrays.asList(Directions.values()));
+    private static final int SIZE = Directions.values().length;
+
+
+    public HerbivoreBehavioralStrategy() {
+        this.positionController = new PositionController();
+        this.rand = new Random();
+    }
+
+    public void setBoardView(Cell[][] board) {
         this.herbivoreSight = board;
     }
 
-    public void getCoordinates(Position currentPosition) {
-        this.positionController.setCurrentPosition(currentPosition);
+    public void setCoordinates(Position relativePosition) {
+        this.positionController.setCurrentPosition(relativePosition);
+    }
+
+    public void updateStrategy(Cell[][] board) {
+        setBoardView(board);
+        int boardCenter = board.length / 2;
+        setCoordinates(new Position(boardCenter, boardCenter));
     }
 
     private void findTargets() {
@@ -34,6 +51,10 @@ public class HerbivoreBehavioralStrategy implements BehavioralStrategy {
         }
     }
 
+    private Cell getCreatureCell() {
+        return herbivoreSight[positionController.getCurrentPosition().getX()][positionController.getCurrentPosition().getY()];
+    }
+
     private void addTarget(int i, int j) {
         if (herbivoreSight[i][j].getFoodAmmount() > 0) {
             Cell cell = herbivoreSight[i][j];
@@ -43,15 +64,19 @@ public class HerbivoreBehavioralStrategy implements BehavioralStrategy {
 
     private Directions chooseTarget() {
         if (targets.size() > 0) {
-            return chooseClosest();
+            return chooseClosestWithFood();
         }
-        return Directions.PASS;
+        return chooseRandomDirection();
     }
 
-    private Directions chooseClosest() {
+    private Directions chooseClosestWithFood() {
         int min = Collections.min(targets.values());
         Cell cell = getCellByDiastance(min);
         return positionController.getDirections(cell.getPosition());
+    }
+
+    private Directions chooseRandomDirection() {
+        return VALUES.get(rand.nextInt(SIZE));
     }
 
     private Cell getCellByDiastance(int distance) {
@@ -63,8 +88,13 @@ public class HerbivoreBehavioralStrategy implements BehavioralStrategy {
         return null;
     }
 
+    private boolean stillHasFood() {
+        return getCreatureCell().getFoodAmmount() > 0;
+    }
     public Directions suggestMove() {
+        if (stillHasFood()) return Directions.PASS;
+
         findTargets();
-        return chooseClosest();
+        return chooseTarget();
     }
 }

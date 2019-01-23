@@ -10,6 +10,8 @@ public class PositionController {
 
     private Position currentPosition;
 
+    public PositionController() {}
+
     public PositionController(Position position) {
         this.currentPosition = position;
     }
@@ -156,5 +158,4 @@ public class PositionController {
         pos.setY(--y);
         return pos;
     }
-
 }
