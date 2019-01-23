@@ -54,7 +54,6 @@ public class Board {
             p.setY(y);
             p.setX(x);
             creature.setPosition(p);
-            System.out.println(creature + "random: " + p + " pos: " + creature.getPosition());
             board[y][x].setCreature(creature);
         }
     }
