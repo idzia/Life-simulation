@@ -9,7 +9,7 @@ import java.util.Random;
 
 public abstract class AbstractCreature extends Thread implements Creature{
     private int energy = 10;
-    private int energyPerFood = 2;
+    private int energyPerFood = 5;
     private Position position;
     private BehavioralStrategy strategy;
     private boolean doneMove =false;

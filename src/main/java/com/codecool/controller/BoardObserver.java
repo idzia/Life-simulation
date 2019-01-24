@@ -57,6 +57,8 @@ public class BoardObserver implements Observer {
                 cow.setDaemon(true);
                 cow.start();
 
+            } else if (sub instanceof FoodDispenser) {
+                new Thread((FoodDispenser)sub).start();
             }
         }
     }

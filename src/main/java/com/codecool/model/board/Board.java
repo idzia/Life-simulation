@@ -19,9 +19,6 @@ public class Board {
         this.board = createBoard(width, height);
         setWidth(width);
         setHeight(height);
-        int startFoodQuantity = 2 * (width * height);
-
-        setFood(startFoodQuantity);
         this.boardHelper = new BoardHelper(this);
     }
 
@@ -139,7 +136,7 @@ public class Board {
         current.setCreature(null);
     }
 
-    private void addFood(int x, int y) {
+    public void addFood(int x, int y) {
         board[y][x].addFoodAmount(1);
     }
 
@@ -153,8 +150,6 @@ public class Board {
             return true;
         }
         return false;
-
-
     }
 
     public void unlockCells() {
@@ -188,4 +183,18 @@ public class Board {
     public Cell[][] getCellsFrom(Position position) {
         return getCellsFrom(position.getX(), position.getY());
     }
+
+    public int countFoodCell() {
+        int foodCells = 0;
+        for (int i = 0; i < height; i++) {
+
+            for (int j = 0; j < width; j++) {
+                if (board[i][j].getFoodAmount()>0) {
+                    foodCells++;
+                }
+            }
+        }
+        return foodCells;
+    }
+
 }
