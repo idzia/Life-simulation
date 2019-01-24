@@ -58,6 +58,9 @@ class BoardHelper {
                 handleBorder(newPos);
                 break;
             }
+            case PASS: {
+                return pos;
+            }
             default:
                 throw new IllegalArgumentException();
         }

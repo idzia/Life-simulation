@@ -10,11 +10,20 @@ public class Tile implements TileInterface {
     protected BufferedImage background = Assets.ground;
     protected BufferedImage food;
     protected BufferedImage creature;
+    protected BufferedImage lock = Assets.none;
+    protected BufferedImage finalTile;
 
     public Tile(int foodQuantity, int creatureType){
 
         getFoodAsset(foodQuantity);
         getCreatureAsset(creatureType);
+        finalTile = joinBufferedImage(background,food,creature,lock);
+
+    }
+
+    public void render(Graphics g, int x, int y){
+        g.drawImage(finalTile, x, y, TILEWIDTH, TILEHEIGHT, null);
+
 
     }
 
@@ -68,11 +77,15 @@ public class Tile implements TileInterface {
         }
     }
 
-    public void render(Graphics g, int x, int y){
-        g.drawImage(background, x, y, TILEWIDTH, TILEHEIGHT, null);
-        g.drawImage(food, x, y, TILEWIDTH, TILEHEIGHT, null);
-        g.drawImage(creature, x, y, TILEWIDTH, TILEHEIGHT, null);
+    public static BufferedImage joinBufferedImage(BufferedImage ... images) {
 
-
+        BufferedImage newImage = new BufferedImage(32, 32,
+                BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = newImage.createGraphics();
+        for(BufferedImage image: images) {
+            g2.drawImage(image, null, 0, 0);
+        }
+        g2.dispose();
+        return newImage;
     }
 }

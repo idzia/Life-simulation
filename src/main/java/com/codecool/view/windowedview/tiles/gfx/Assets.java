@@ -10,7 +10,7 @@ public class Assets {
     public static BufferedImage[] food = new BufferedImage[FOOD_QUANTITY];
     public static BufferedImage herbivore, predator,none;
 
-    public static void init(){
+    public static void init() {
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/TileSet.png"));
         ground = sheet.crop(0, 0, width, height);
 
