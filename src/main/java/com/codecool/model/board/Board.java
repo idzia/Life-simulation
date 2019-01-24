@@ -103,9 +103,14 @@ public class Board {
         return cellInRange;
     }
 
-    public Cell[][] getCellsFrom(int x, int y) {
+
+    public Cell[][] getCellsFrom(int column, int row) {
         int defaultRadius = 2;
-        return getCellsFrom(x, y, defaultRadius, true);
+        return getCellsFrom(column, row, defaultRadius, true);
+    }
+
+    public Cell[][] getCellsFrom(Position position) {
+        return getCellsFrom(position.getX(), position.getY());
     }
 
     public Cell getNextCell(int column, int row, Directions direction) {
@@ -127,14 +132,6 @@ public class Board {
         }
     }
 
-
-    public void setFood(int foodQuantity) {
-        Random generator = new Random();
-        for (int i = 0; i < (foodQuantity); i++) {
-            addFood(generator.nextInt(width), generator.nextInt(height));
-        }
-    }
-
     private void swapCells(Cell current, Cell target) {
         target.setCreature(current.getCurrentCreature());
         current.setCreature(null);
@@ -148,31 +145,17 @@ public class Board {
         board[y][x].reduceFoodAmount(1);
     }
 
-    public boolean lockCell(Cell nextCell) {
+    public void lockCell(Cell nextCell) {
         if (!(nextCell.isLock())) {
             nextCell.setLock(true);
-            return true;
-        }
-        return false;
-    }
-
-    public void unlockCells() {
-
-        for (int i = 0; i < height; i++) {
-
-            for (int j = 0; j < width; j++) {
-                if (board[i][j].getCurrentCreature() == null) {
-                    board[i][j].setLock(false);
-                }
-            }
         }
     }
 
-    public void setWidth(int width) {
+    private void setWidth(int width) {
         this.width = width;
     }
 
-    public void setHeight(int height) {
+    private void setHeight(int height) {
         this.height = height;
     }
 
@@ -182,10 +165,6 @@ public class Board {
 
     public int getHeight() {
         return height;
-    }
-
-    public Cell[][] getCellsFrom(Position position) {
-        return getCellsFrom(position.getX(), position.getY());
     }
 
     public int countFoodCell() {

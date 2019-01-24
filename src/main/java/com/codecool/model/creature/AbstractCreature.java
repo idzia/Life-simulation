@@ -20,23 +20,6 @@ public abstract class AbstractCreature extends Thread implements Creature{
         this.manager = manager;
     }
 
-    // for test usage
-    private Directions getRandomDirection() {
-        Random random = new Random();
-        switch (random.nextInt(7)) {
-            case 0:
-                return Directions.N;
-            case 1:
-                return Directions.E;
-            case 2:
-                return Directions.W;
-            case 3:
-                return Directions.S;
-            default:
-                    return Directions.PASS;
-        }
-    }
-
     public void move() {
         this.strategy.update(manager.cutBoard(this));
         Directions direction = this.strategy.suggestMove();
@@ -52,8 +35,6 @@ public abstract class AbstractCreature extends Thread implements Creature{
                 move();
             }
         }
-
-        //here we shoudl ask for lock remove.
         manager.unlockDeadCell(this);
     }
 
@@ -63,11 +44,7 @@ public abstract class AbstractCreature extends Thread implements Creature{
         this.setDoneMove(false);
     }
 
-
-    public void starve(int value){
-        this.energy -= value;
-    }
-    public void starve(){
+    private void starve(){
         this.energy --;
     }
 
@@ -105,11 +82,11 @@ public abstract class AbstractCreature extends Thread implements Creature{
         this.position = position;
     }
 
-    public boolean isDoneMove() {
+    private boolean isDoneMove() {
         return doneMove;
     }
 
-    public void setDoneMove(boolean doneMove) {
+    private void setDoneMove(boolean doneMove) {
         this.doneMove = doneMove;
     }
 
