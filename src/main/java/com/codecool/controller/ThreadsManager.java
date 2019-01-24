@@ -6,11 +6,7 @@ import com.codecool.model.board.Board;
 import com.codecool.model.board.Cell;
 import com.codecool.model.creature.AbstractCreature;
 import com.codecool.model.creature.Creature;
-import com.codecool.model.creature.Herbivore;
 import com.codecool.model.creature.Subscriber;
-
-import java.util.List;
-import java.util.Set;
 
 public class ThreadsManager implements Subscriber {
     private Board board;
@@ -65,5 +61,11 @@ public class ThreadsManager implements Subscriber {
     @Override
     public void onNotify() {
         removeDeadCreatures();
+    }
+
+    public void unlockDeadCell(AbstractCreature c) {
+        Position current = c.getPosition();
+        Cell target = this.board.getCell(current.getX(), current.getY());
+        target.unlock();
     }
 }
