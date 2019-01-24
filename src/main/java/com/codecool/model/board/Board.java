@@ -176,6 +176,14 @@ public class Board {
         this.height = height;
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     public Cell[][] getCellsFrom(Position position) {
         return getCellsFrom(position.getX(), position.getY());
     }
