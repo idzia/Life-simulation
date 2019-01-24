@@ -41,9 +41,9 @@ public class StupidHerbivoreStrategy extends HerbivoreStrategy {
         Cell cSuper = new Cell();
         Cell cSuper2 = new Cell();
 
-        cSuper.addFoodAmmount(5);
+        cSuper.addFoodAmount(5);
         cSuper.setPosition(new Position(1,1));
-        cSuper2.addFoodAmmount(2);
+        cSuper2.addFoodAmount(2);
         cSuper2.setPosition(new Position(1,0));
 
 

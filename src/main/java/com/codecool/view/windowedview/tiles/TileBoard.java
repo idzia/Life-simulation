@@ -52,7 +52,7 @@ public class TileBoard {
         Tile t = TileFlyweightFactory
                 .getTile(
                         new ArrayList<>(Arrays.asList(
-                                current.getFoodAmmount(),
+                                current.getFoodAmount(),
                                 getIntRepresentationOfCreature(current.getCurrentCreature())
                                 ,current.isLock() ? 1:0
                         ))
