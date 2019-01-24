@@ -16,7 +16,6 @@ public class Simulation implements Runnable {
     private Board board;
     private BoardObserver observer;
     private boolean isRunning = true;
-    private CreatureFactory creatureFactory;
     private ThreadsManager threadsManager;
 
     public Simulation(){
@@ -30,9 +29,8 @@ public class Simulation implements Runnable {
 
     public void run() {
         this.threadsManager = new ThreadsManager(this.board);
-        this.creatureFactory = new CreatureFactory(this.threadsManager);
          this.observer = new BoardObserver();
-        List<Creature> creatures = this.creatureFactory.getCreatures(40);
+        List<Creature> creatures = this.threadsManager.getCreatures(10);
         this.observer.subscribe(threadsManager);
         this.observer.subscribe(new ArrayList<>(creatures));
         board.initialize(10,10, 1); //refactor

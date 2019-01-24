@@ -12,7 +12,7 @@ public abstract class AbstractCreature extends Thread implements Creature{
     private int energyPerFood = 2;
     private Position position;
     private BehavioralStrategy strategy;
-    private boolean doneMove =false;
+    volatile private boolean doneMove =false;
     private ThreadsManager manager;
 
     public AbstractCreature(BehavioralStrategy strategy, ThreadsManager manager){
@@ -51,12 +51,8 @@ public abstract class AbstractCreature extends Thread implements Creature{
             while (!this.isDoneMove()) {
                 move();
             }
-            try {
-                sleep(0); //WTF
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
+
         //here we shoudl ask for lock remove.
         manager.unlockDeadCell(this);
     }

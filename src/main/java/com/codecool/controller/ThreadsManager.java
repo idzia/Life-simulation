@@ -8,7 +8,9 @@ import com.codecool.model.creature.AbstractCreature;
 import com.codecool.model.creature.Creature;
 import com.codecool.model.creature.CreatureFactory;
 import com.codecool.model.creature.Subscriber;
+import com.codecool.model.creature.strategy.StupidHerbivoreStrategy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ThreadsManager implements Subscriber {
@@ -17,6 +19,7 @@ public class ThreadsManager implements Subscriber {
 
     public ThreadsManager(Board board) {
         this.board = board;
+        this.factory = new CreatureFactory(this);
     }
 
     public Cell[][] cutBoard(Creature creature) {
@@ -60,6 +63,14 @@ public class ThreadsManager implements Subscriber {
             this.board.getCell(current.getX(), current.getY()).unlock();
             return true;
         }
+    }
+
+    public List<Creature> getCreatures(int amount) {
+        List<Creature> creatures = new ArrayList<>();
+        for (int i=0;i<amount;i++) {
+            creatures.add(factory.getCreature(new StupidHerbivoreStrategy()));
+        }
+        return creatures;
     }
 
     public void startCreatures(List<Creature> creatures) {
