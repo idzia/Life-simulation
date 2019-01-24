@@ -1,5 +1,6 @@
 package com.codecool.model.board;
 
+import com.codecool.controller.FoodDispenser;
 import com.codecool.model.Directions;
 import com.codecool.model.creature.Herbivore;
 import com.codecool.model.Position;
@@ -16,13 +17,15 @@ public class Board {
 
 
     public void initialize(int width, int height, int populateQuantity) {
+
         this.board = createBoard(width, height);
         setWidth(width);
         setHeight(height);
-        int startFoodQuantity = 2 * (width * height);
-
+//        int startFoodQuantity = 2 * (width * height);
+        FoodDispenser foodDispenser = new FoodDispenser(this);
+        foodDispenser.start();
         populate(width, height, populateQuantity);
-        setFood(startFoodQuantity);
+//        setFood(startFoodQuantity);
         this.boardHelper = new BoardHelper(this);
     }
 
@@ -123,19 +126,19 @@ public class Board {
     }
 
 
-    public void setFood(int foodQuantity) {
-        Random generator = new Random();
-        for (int i = 0; i < (foodQuantity); i++) {
-            addFood(generator.nextInt(width), generator.nextInt(height));
-        }
-    }
+//    public void setFood(int foodQuantity) {
+//        Random generator = new Random();
+//        for (int i = 0; i < (foodQuantity); i++) {
+//            addFood(generator.nextInt(width), generator.nextInt(height));
+//        }
+//    }
 
     private void swapCells(Cell current, Cell target) {
         target.setCreature(current.getCurrentCreature());
         current.setCreature(null);
     }
 
-    private void addFood(int x, int y) {
+    public void addFood(int x, int y) {
         board[y][x].addFoodAmmount(1);
     }
 
@@ -149,8 +152,6 @@ public class Board {
             return true;
         }
         return false;
-
-
     }
 
     public void unlockCells() {
@@ -163,11 +164,43 @@ public class Board {
         }
     }
 
-    public void setWidth(int width) {
+    private void setWidth(int width) {
         this.width = width;
     }
 
-    public void setHeight(int height) {
+    private void setHeight(int height) {
         this.height = height;
     }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int countFoodCell() {
+        int foodCells = 0;
+        for (int i = 0; i < height; i++) {
+
+            for (int j = 0; j < width; j++) {
+                if (board[i][j].getFoodAmmount()>0) {
+                    foodCells++;
+                }
+            }
+        }
+        return foodCells;
+    }
+
+    public void cleanBoardFood() {
+        for (int i = 0; i < height; i++) {
+
+            for (int j = 0; j < width; j++) {
+                reduceFood(i,j);
+                System.out.println("food was reduce");
+            }
+        }
+    }
+
 }
