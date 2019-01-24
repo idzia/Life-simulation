@@ -5,7 +5,7 @@ import com.codecool.model.Directions;
 import com.codecool.model.creature.Herbivore;
 import com.codecool.model.Position;
 import com.codecool.model.creature.Creature;
-import com.codecool.model.creature.strategy.HerbivoreBehavioralStrategy;
+import com.codecool.model.creature.strategy.HerbivoreStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
