@@ -3,10 +3,11 @@ package com.codecool.controller;
 
 import com.codecool.model.board.Board;
 import com.codecool.model.board.Cell;
+import com.codecool.model.creature.Subscriber;
 
 import java.util.Random;
 
-public class FoodDispenser extends Thread {
+public class FoodDispenser extends Thread implements Subscriber {
     private volatile boolean isNewTurn = true;
     private Board board;
     private int height;
@@ -23,28 +24,31 @@ public class FoodDispenser extends Thread {
 
     public void switchTurn() {
         isNewTurn = !isNewTurn;
-//        notify();
+
     }
 
     public void onNotify(){
-        switchTurn();
+//        switchTurn();
+        int cauntTurn = 0;
+        if (cauntTurn > 10) {
+            switchTurn();
+            cauntTurn = 0;
+        }
+        cauntTurn++;
     }
 
     public void run() {
         while(!this.interrupted()) {
-            synchronized (this) {
-                if (isNewTurn) {
-                    if (foodPercent() == 0){
-                        setFood(2*startFoodQuantity);
-                    }
-                    if (foodPercent()<0.15) {
-                        setFood(startFoodQuantity/2);
-                        System.out.println("food was added");
-                    }
-                    switchTurn();
-                }
-            }
 
+            if (isNewTurn) {
+                if (foodPercent() == 0){
+                    setFood(2*startFoodQuantity);
+                }
+                if (foodPercent()<0.15) {
+                    setFood(startFoodQuantity/2);
+                }
+                switchTurn();
+            }
         }
     }
 

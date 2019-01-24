@@ -1,6 +1,7 @@
 package com.codecool.model;
 
 import com.codecool.controller.BoardObserver;
+import com.codecool.controller.FoodDispenser;
 import com.codecool.controller.ThreadsManager;
 import com.codecool.model.board.Board;
 import com.codecool.model.creature.Creature;
@@ -18,29 +19,29 @@ public class Simulation implements Runnable {
     private boolean isRunning = true;
     private CreatureFactory creatureFactory;
     private ThreadsManager threadsManager;
+    private FoodDispenser food;
 
     public Simulation(){
         this.isRunning = true;
         this.board = new Board();
         this.observer = new BoardObserver();
-
-
     }
-
 
     public void run() {
         this.threadsManager = new ThreadsManager(this.board);
         this.creatureFactory = new CreatureFactory(this.threadsManager);
-         this.observer = new BoardObserver();
+        this.observer = new BoardObserver();
         List<Creature> creatures = this.creatureFactory.getCreatures(4);
         this.observer.subscribe(threadsManager);
         this.observer.subscribe(new ArrayList<>(creatures));
+
         board.initialize(10,10, 1);
+        this.food = new FoodDispenser(this.board);
+        this.observer.subscribe(food);
+
         board.populate(creatures);
         this.observer.init();
         this.view = new WindowedView(board, 500, 500);
-
-
 
         int fps = 1; //1x per sec
         double timePerTick = 1000000000 / fps;
@@ -73,8 +74,6 @@ public class Simulation implements Runnable {
     }
 
     private boolean update() {
-        //todo:
-        //redistribute food
         observer.shout();
         return observer.isAliveCreature();
     }

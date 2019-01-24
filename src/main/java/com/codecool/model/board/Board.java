@@ -24,11 +24,6 @@ public class Board {
         this.board = createBoard(width, height);
         setWidth(width);
         setHeight(height);
-//        int startFoodQuantity = 2 * (width * height);
-        FoodDispenser foodDispenser = new FoodDispenser(this);
-        foodDispenser.start();
-        populate(width, height, populateQuantity);
-//        setFood(startFoodQuantity);
         this.boardHelper = new BoardHelper(this);
     }
 
@@ -128,14 +123,6 @@ public class Board {
         }
     }
 
-
-//    public void setFood(int foodQuantity) {
-//        Random generator = new Random();
-//        for (int i = 0; i < (foodQuantity); i++) {
-//            addFood(generator.nextInt(width), generator.nextInt(height));
-//        }
-//    }
-
     private void swapCells(Cell current, Cell target) {
         target.setCreature(current.getCurrentCreature());
         current.setCreature(null);
@@ -200,16 +187,6 @@ public class Board {
             }
         }
         return foodCells;
-    }
-
-    public void cleanBoardFood() {
-        for (int i = 0; i < height; i++) {
-
-            for (int j = 0; j < width; j++) {
-                reduceFood(i,j);
-                System.out.println("food was reduce");
-            }
-        }
     }
 
 }

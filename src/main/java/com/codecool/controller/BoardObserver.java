@@ -53,7 +53,10 @@ public class BoardObserver implements Observer {
 
     public void init() {
         for(Subscriber sub : subscribers){
-            if(sub instanceof Creature) new Thread((AbstractCreature)sub).start();
+            if(sub instanceof Creature) { new Thread((AbstractCreature)sub).start();}
+            else if (sub instanceof FoodDispenser) {
+                new Thread((FoodDispenser)sub).start();
+            }
         }
     }
 }
