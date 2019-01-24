@@ -16,28 +16,23 @@ public class Simulation implements Runnable {
     private View view;
     private Board board;
     private BoardObserver observer;
-    private boolean isRunning = true;
+    private boolean isRunning;
     private ThreadsManager threadsManager;
-    private FoodDispenser food;
 
     public Simulation(){
         this.isRunning = true;
         this.board = new Board();
         this.observer = new BoardObserver();
+        this.threadsManager = new ThreadsManager(this.board, this.observer);
     }
 
     public void run() {
-        this.observer = new BoardObserver();
-        this.threadsManager = new ThreadsManager(this.board, this.observer);
-        List<Creature> creatures = this.threadsManager.getCreatures(40);
-        this.observer.subscribe(threadsManager);
+        List<Creature> creatures = this.threadsManager.getCreatures(4);
         this.observer.subscribe(new ArrayList<>(creatures));
-        board.initialize(15,15, 1);
-        this.food = new FoodDispenser(this.board);
+        this.board.initialize(15,15, 1);
+        FoodDispenser food = new FoodDispenser(this.board);
         this.observer.subscribe(food);
         food.start();
-
-
 
         board.populate(creatures);
         this.threadsManager.startCreatures(creatures);
@@ -53,13 +48,6 @@ public class Simulation implements Runnable {
 
 
         while(isRunning){
-
-//            if(!observer.isAliveCreature()){
-//                System.out.println("");
-//                food.interrupt();
-//                break;
-//            }
-
             now = System.nanoTime();
             delta += (now - lastTime) / timePerTick;
             timer += now - lastTime;
@@ -75,7 +63,6 @@ public class Simulation implements Runnable {
                 timer = 0;
             }
         }
-        System.out.println("finnish");
         observer.shout();
     }
 

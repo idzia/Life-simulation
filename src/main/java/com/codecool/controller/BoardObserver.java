@@ -1,8 +1,6 @@
 package com.codecool.controller;
 
-import com.codecool.model.creature.AbstractCreature;
 import com.codecool.model.creature.Creature;
-import com.codecool.model.creature.Herbivore;
 import com.codecool.model.creature.Subscriber;
 
 import java.util.ArrayList;

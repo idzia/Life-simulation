@@ -6,7 +6,7 @@ import com.codecool.model.creature.Creature;
 public class Cell {
     volatile private Creature currentCreature = null;
     volatile private int foodAmount = 0;
-    volatile private boolean lock = false;// x2
+    volatile private boolean lock = false;
     private Position position;
 
     public Position getPosition() {
