@@ -1,9 +1,11 @@
 package com.codecool.view.windowedview;
 
 import com.codecool.model.board.Board;
+import com.codecool.view.windowedview.display.CamerMan;
 import com.codecool.view.windowedview.display.Camera;
 import com.codecool.view.windowedview.display.Display;
 import com.codecool.view.windowedview.input.KeyManager;
+import com.codecool.view.windowedview.tiles.Tile;
 import com.codecool.view.windowedview.tiles.TileBoard;
 import com.codecool.view.windowedview.tiles.gfx.Assets;
 
@@ -28,6 +30,7 @@ public class WindowRunnable implements Runnable {
 
     //Camera
     private Camera camera;
+    private CamerMan camerMan;
 
     //WindowHandler
     private WindowHandler windowHandler;
@@ -46,16 +49,17 @@ public class WindowRunnable implements Runnable {
         display.getFrame().addKeyListener(keyManager);
         Assets.init();
 
-        windowHandler = new WindowHandler(this);
+        windowHandler = new WindowHandler(this, width, height, board.getHeight(), board.getWidth());
         this.tiles = new TileBoard(board, windowHandler);
-        //camera = new Camera(windowHandler, 0, 0);
-
+        camera = new Camera(windowHandler, 1, 1);
+        this.camerMan = new CamerMan(windowHandler, 3,4);
     }
     public static void processInput(KeyManager input) {
         input.update();
     }
 
     private void update(){
+        camerMan.update();
     }
 
     private void render(){
@@ -69,6 +73,7 @@ public class WindowRunnable implements Runnable {
         g.clearRect(0, 0, width, height);
         //Draw Here!
         tiles.render(g);
+        camerMan.render(g);
 
 
         //End Drawing
@@ -88,13 +93,14 @@ public class WindowRunnable implements Runnable {
         int ticks = 0;
 
         while(running){
+
+            processInput(keyManager);
             now = System.nanoTime();
             delta += (now - lastTime) / timePerTick;
             timer += now - lastTime;
             lastTime = now;
 
             if(delta >= 1){
-                processInput(keyManager);
                 update();
                 render();
                 ticks++;
@@ -102,7 +108,6 @@ public class WindowRunnable implements Runnable {
             }
 
             if(timer >= 1000000000){
-                System.out.println("fps: " + ticks);
                 ticks = 0;
                 timer = 0;
             }
@@ -148,4 +153,7 @@ public class WindowRunnable implements Runnable {
         }
     }
 
+    public TileBoard getBoard() {
+        return tiles;
+    }
 }
