@@ -64,7 +64,6 @@ public class Simulation implements Runnable {
                 timer = 0;
             }
         }
-        System.out.println("finnish");
         observer.shout();
     }
 
