@@ -28,9 +28,9 @@ public class Simulation implements Runnable {
 
 
     public void run() {
-        this.threadsManager = new ThreadsManager(this.board);
-         this.observer = new BoardObserver();
-        List<Creature> creatures = this.threadsManager.getCreatures(10);
+        this.observer = new BoardObserver();
+        this.threadsManager = new ThreadsManager(this.board, this.observer);
+        List<Creature> creatures = this.threadsManager.getCreatures(1);
         this.observer.subscribe(threadsManager);
         this.observer.subscribe(new ArrayList<>(creatures));
         board.initialize(10,10, 1); //refactor

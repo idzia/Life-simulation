@@ -10,4 +10,6 @@ public interface Creature extends Subscriber {
     void setPosition(Position pos);
     boolean isDead();
     void eat();
+    int getEnergy();
+    void setEnergy(int energy);
 }

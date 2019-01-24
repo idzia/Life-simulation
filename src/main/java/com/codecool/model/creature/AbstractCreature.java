@@ -8,8 +8,8 @@ import com.codecool.model.creature.strategy.BehavioralStrategy;
 import java.util.Random;
 
 public abstract class AbstractCreature extends Thread implements Creature{
-    private int energy = 10;
-    private int energyPerFood = 2;
+    private int energy = 110;
+    private int energyPerFood = 5;
     private Position position;
     private BehavioralStrategy strategy;
     volatile private boolean doneMove =false;
@@ -38,6 +38,7 @@ public abstract class AbstractCreature extends Thread implements Creature{
     }
 
     public void move() {
+        System.out.println(this.energy);
         this.strategy.update(manager.cutBoard(this));
         Directions direction = this.strategy.suggestMove();
         if (manager.moveCreature(this, direction)) {
@@ -74,13 +75,18 @@ public abstract class AbstractCreature extends Thread implements Creature{
     public int getEnergy() {
         return energy;
     }
+
+    @Override
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
     public boolean isDead() {
        return this.energy <= 0;
     }
 
     public synchronized void eat(){
         this.energy += energyPerFood;
-        System.out.println("mniam");
     }
 
     public BehavioralStrategy getStrategy() {
