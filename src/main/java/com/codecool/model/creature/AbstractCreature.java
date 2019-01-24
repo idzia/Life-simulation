@@ -38,7 +38,6 @@ public abstract class AbstractCreature extends Thread implements Creature{
     }
 
     public void move() {
-        System.out.println(this.energy);
         this.strategy.update(manager.cutBoard(this));
         Directions direction = this.strategy.suggestMove();
         if (manager.moveCreature(this, direction)) {
