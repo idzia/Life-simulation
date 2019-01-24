@@ -6,10 +6,14 @@ import com.codecool.model.board.Board;
 import com.codecool.model.board.Cell;
 import com.codecool.model.creature.AbstractCreature;
 import com.codecool.model.creature.Creature;
+import com.codecool.model.creature.CreatureFactory;
 import com.codecool.model.creature.Subscriber;
+
+import java.util.List;
 
 public class ThreadsManager implements Subscriber {
     private Board board;
+    private CreatureFactory factory;
 
     public ThreadsManager(Board board) {
         this.board = board;
@@ -55,6 +59,14 @@ public class ThreadsManager implements Subscriber {
             this.board.moveCreature(current, direction);
             this.board.getCell(current.getX(), current.getY()).unlock();
             return true;
+        }
+    }
+
+    public void startCreatures(List<Creature> creatures) {
+        for(Creature creature : creatures){
+            Thread cow = new Thread((AbstractCreature)creature);
+            cow.setDaemon(true);
+            cow.start();
         }
     }
 

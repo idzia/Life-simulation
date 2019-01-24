@@ -49,15 +49,4 @@ public class BoardObserver implements Observer {
         }
         return false;
     }
-
-    public void init() {
-        for(Subscriber sub : subscribers){
-            if(sub instanceof Creature) {
-                Thread cow = new Thread((AbstractCreature)sub);
-                cow.setDaemon(true);
-                cow.start();
-
-            }
-        }
-    }
 }
