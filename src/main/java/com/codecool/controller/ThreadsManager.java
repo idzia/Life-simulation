@@ -43,6 +43,14 @@ public class ThreadsManager implements Subscriber {
 
     public synchronized boolean moveCreature(Creature creature, Directions direction){
         Position current = creature.getPosition();
+        if (direction.equals(Directions.PASS)) {
+            Cell c = board.getCell(current.getX(), current.getY());
+            if (c.getFoodAmount() > 0) {
+                creature.eat();
+                c.reduceFoodAmount(1);
+            }
+            return true;
+        }
         Cell target = this.board.getNextCell(current.getX(), current.getY(), direction);
         if (target.isLock()) {
             return false;

@@ -61,6 +61,7 @@ public abstract class AbstractCreature extends Thread implements Creature{
 
     public void onNotify(){
         this.starve();
+
         this.setDoneMove(false);
     }
 
