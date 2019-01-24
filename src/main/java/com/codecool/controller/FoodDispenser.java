@@ -8,11 +8,12 @@ import com.codecool.model.creature.Subscriber;
 import java.util.Random;
 
 public class FoodDispenser extends Thread implements Subscriber {
-    private volatile boolean isNewTurn = true;
+    private volatile boolean isNewTurn = false;
     private Board board;
     private int height;
     private int width;
     int startFoodQuantity;
+    int cauntTurn = 0;
 
 
     public FoodDispenser(Board board) {
@@ -20,6 +21,7 @@ public class FoodDispenser extends Thread implements Subscriber {
         this.height = board.getHeight();
         this.width = board.getWidth();
         this.startFoodQuantity = height * width;
+
     }
 
     public void switchTurn() {
@@ -28,9 +30,8 @@ public class FoodDispenser extends Thread implements Subscriber {
     }
 
     public void onNotify(){
-//        switchTurn();
-        int cauntTurn = 0;
-        if (cauntTurn > 10) {
+
+        if (cauntTurn > 5) {
             switchTurn();
             cauntTurn = 0;
         }
@@ -38,15 +39,11 @@ public class FoodDispenser extends Thread implements Subscriber {
     }
 
     public void run() {
+        setFood(startFoodQuantity/5);
         while(!this.interrupted()) {
 
             if (isNewTurn) {
-                if (foodPercent() == 0){
-                    setFood(2*startFoodQuantity);
-                }
-                if (foodPercent()<0.15) {
-                    setFood(startFoodQuantity/2);
-                }
+                setFood(startFoodQuantity/10);
                 switchTurn();
             }
         }

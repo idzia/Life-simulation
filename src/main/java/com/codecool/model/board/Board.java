@@ -136,7 +136,7 @@ public class Board {
         current.setCreature(null);
     }
 
-    private void addFood(int x, int y) {
+    public void addFood(int x, int y) {
         board[y][x].addFoodAmount(1);
     }
 
