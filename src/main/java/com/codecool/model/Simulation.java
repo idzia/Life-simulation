@@ -29,7 +29,6 @@ public class Simulation implements Runnable {
 
 
     public void run() {
-        this.view = new WindowedView(board);
         this.threadsManager = new ThreadsManager(this.board);
         this.creatureFactory = new CreatureFactory(this.threadsManager);
          this.observer = new BoardObserver();
@@ -39,6 +38,7 @@ public class Simulation implements Runnable {
         board.initialize(10,10, 1);
         board.populate(creatures);
         this.observer.init();
+        this.view = new WindowedView(board, 500, 500);
 
 
 
