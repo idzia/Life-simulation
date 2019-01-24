@@ -28,7 +28,9 @@ public class Board {
         for (int i = 0; i < height; i++) {
 
             for (int j = 0; j < width; j++) {
+                Position p = new Position(i, j);
                 board[i][j] = new Cell();
+                board[i][j].setPosition(p);
             }
         }
         return board;
@@ -85,9 +87,9 @@ public class Board {
                 } else if (temporaryX >= width) {
                     temporaryX = -1 - radiusX;
                 }
-
-                cellInRange[i][j] = board[temporaryY][temporaryX];
-
+                Position p = new Position(i, j);
+                cellInRange[i][j] = board[temporaryY][temporaryX].copy();
+                cellInRange[i][j].setPosition(p);
 
                 radiusX--;
             }
@@ -121,17 +123,25 @@ public class Board {
         }
     }
 
+
+    public void setFood(int foodQuantity) {
+        Random generator = new Random();
+        for (int i = 0; i < (foodQuantity); i++) {
+            addFood(generator.nextInt(width), generator.nextInt(height));
+        }
+    }
+
     private void swapCells(Cell current, Cell target) {
         target.setCreature(current.getCurrentCreature());
         current.setCreature(null);
     }
 
-    public void addFood(int x, int y) {
-        board[y][x].addFoodAmmount(1);
+    private void addFood(int x, int y) {
+        board[y][x].addFoodAmount(1);
     }
 
     public void reduceFood(int x, int y) {
-        board[y][x].reduceFoodAmmount(1);
+        board[y][x].reduceFoodAmount(1);
     }
 
     public boolean lockCell(Cell nextCell) {
@@ -179,7 +189,7 @@ public class Board {
         for (int i = 0; i < height; i++) {
 
             for (int j = 0; j < width; j++) {
-                if (board[i][j].getFoodAmmount()>0) {
+                if (board[i][j].getFoodAmount()>0) {
                     foodCells++;
                 }
             }

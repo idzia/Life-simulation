@@ -14,7 +14,7 @@ public class TerminalView implements View {
                 if(cell.getCurrentCreature() != null) {
                     sb.append("C ");
                 } else
-                    if(cell.getFoodAmmount() > 0){
+                    if(cell.getFoodAmount() > 0){
                     sb.append("F ");
                     } else{
                     sb.append("_ ");

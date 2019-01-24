@@ -9,5 +9,5 @@ public interface Creature extends Subscriber {
     Position getPosition();
     void setPosition(Position pos);
     boolean isDead();
-    void interrupt();
+    void eat();
 }

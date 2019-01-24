@@ -66,7 +66,7 @@ public abstract class HerbivoreStrategy implements BehavioralStrategy {
     }
 
     private void addTarget(int i, int j) {
-        if (herbivoreSight[i][j].getFoodAmmount() > 0) {
+        if (herbivoreSight[i][j].getFoodAmount() > 0) {
             Cell cell = herbivoreSight[i][j];
             targets.put(cell, positionController.calculateDistance(cell.getPosition()));
         }
@@ -97,7 +97,7 @@ public abstract class HerbivoreStrategy implements BehavioralStrategy {
     }
 
     protected boolean stillHasFood() {
-        return getCreatureCell().getFoodAmmount() > 0;
+        return getCreatureCell().getFoodAmount() > 0;
     }
 
     public Directions suggestMove() {
