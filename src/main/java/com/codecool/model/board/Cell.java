@@ -4,9 +4,9 @@ import com.codecool.model.Position;
 import com.codecool.model.creature.Creature;
 
 public class Cell {
-    private Creature currentCreature = null;
-    private int foodAmount = 0;
-    private boolean lock = false;// x2
+    volatile private Creature currentCreature = null;
+    volatile private int foodAmount = 0;
+    volatile private boolean lock = false;// x2
     private Position position;
 
     public Position getPosition() {
@@ -24,14 +24,14 @@ public class Cell {
         return foodAmount;
     }
 
-    public void lock(){
+    synchronized public void lock(){
         this.lock = true;
     }
-    public void unlock(){
+    synchronized public void unlock(){
         this.lock = false;
     }
 
-    public boolean isLock() {
+    synchronized public boolean isLock() {
         return lock;
     }
 
@@ -47,7 +47,7 @@ public class Cell {
         this.foodAmount -= foodAmmount;
     }
 
-    public void setLock(boolean lock) {
+    synchronized public void setLock(boolean lock) {
         this.lock = lock;
     }
 
@@ -55,7 +55,7 @@ public class Cell {
         this.foodAmount = amount;
     }
 
-    public Cell copy() {
+     public Cell copy() {
         Cell newCell = new Cell();
         newCell.setLock(this.lock);
         newCell.setCreature(this.currentCreature);

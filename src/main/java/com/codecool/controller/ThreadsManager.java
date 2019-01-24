@@ -34,6 +34,7 @@ public class ThreadsManager implements Subscriber {
                 Creature creature = cell.getCurrentCreature();
                 if (creature != null && creature.isDead()) {
                     cell.setCreature(null);
+                    cell.unlock();
                 }
             }
         }

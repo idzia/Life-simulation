@@ -29,18 +29,19 @@ public class Simulation implements Runnable {
     public void run() {
         this.observer = new BoardObserver();
         this.threadsManager = new ThreadsManager(this.board, this.observer);
-        List<Creature> creatures = this.threadsManager.getCreatures(1);
+        List<Creature> creatures = this.threadsManager.getCreatures(40);
         this.observer.subscribe(threadsManager);
         this.observer.subscribe(new ArrayList<>(creatures));
-        board.initialize(10,10, 1);
+        board.initialize(15,15, 1);
         this.food = new FoodDispenser(this.board);
         this.observer.subscribe(food);
+        food.start();
 
 
 
         board.populate(creatures);
         this.threadsManager.startCreatures(creatures);
-        this.view = new WindowedView(board, 500, 500);
+        this.view = new WindowedView(board, 1000, 1000);
 
         int fps = 1; //1x per sec
         double timePerTick = 1000000000 / fps;
@@ -53,11 +54,11 @@ public class Simulation implements Runnable {
 
         while(isRunning){
 
-            if(!observer.isAliveCreature()){
-                System.out.println("");
-                food.interrupt();
-                break;
-            }
+//            if(!observer.isAliveCreature()){
+//                System.out.println("");
+//                food.interrupt();
+//                break;
+//            }
 
             now = System.nanoTime();
             delta += (now - lastTime) / timePerTick;

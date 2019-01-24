@@ -21,7 +21,7 @@ public class FoodDispenser extends Thread implements Subscriber {
         this.board = board;
         this.height = board.getHeight();
         this.width = board.getWidth();
-        this.startFoodQuantity = height * width;
+        this.startFoodQuantity = height * width*3;
 
     }
 

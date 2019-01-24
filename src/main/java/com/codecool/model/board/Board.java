@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class Board {
 
-    private Cell[][] board;
+    volatile private Cell[][] board;
     private BoardHelper boardHelper;
     private int width;
     private int height;

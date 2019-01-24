@@ -9,17 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BoardObserver implements Observer {
-    volatile private List<Subscriber> subscribers;
+    private List<Subscriber> subscribers;
 
     public BoardObserver() {
         this.subscribers = new ArrayList<>();
     }
 
     @Override
-    public void subscribe(Subscriber subscriber) {
+     public void subscribe(Subscriber subscriber) {
         this.subscribers.add(subscriber);
     }
-    public void subscribe(List<Subscriber> subscribers) {
+     public void subscribe(List<Subscriber> subscribers) {
         for (Subscriber subscriber: subscribers) {
             subscribe(subscriber);
 
