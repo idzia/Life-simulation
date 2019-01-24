@@ -49,6 +49,7 @@ public class ThreadsManager implements Subscriber {
         } else {
             this.board.lockCell(this.board.getNextCell(current.getX(), current.getY(), direction));
             this.board.moveCreature(current, direction);
+            this.board.getCell(current.getX(),current.getY()).unlock();
             return true;
         }
     }
@@ -56,5 +57,11 @@ public class ThreadsManager implements Subscriber {
     @Override
     public void onNotify() {
         removeDeadCreatures();
+    }
+
+    public void unlockDeadCell(AbstractCreature c) {
+        Position current = c.getPosition();
+        Cell target = this.board.getCell(current.getX(), current.getY());
+        target.unlock();
     }
 }

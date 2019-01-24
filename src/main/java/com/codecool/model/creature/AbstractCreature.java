@@ -8,7 +8,7 @@ import com.codecool.model.creature.strategy.BehavioralStrategy;
 import java.util.Random;
 
 public abstract class AbstractCreature extends Thread implements Creature{
-    private int energy = 100;
+    private int energy = 10;
     private int energyPerFood = 15;
     private Position position;
     private BehavioralStrategy strategy;
@@ -57,12 +57,15 @@ public abstract class AbstractCreature extends Thread implements Creature{
                 e.printStackTrace();
             }
         }
+        //here we shoudl ask for lock remove.
+        manager.unlockDeadCell(this);
     }
 
     public void onNotify(){
         this.starve();
         this.setDoneMove(false);
     }
+
 
     public void starve(int value){
         this.energy -= value;

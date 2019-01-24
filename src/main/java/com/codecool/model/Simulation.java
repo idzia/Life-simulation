@@ -30,11 +30,10 @@ public class Simulation implements Runnable {
     public void run() {
         this.threadsManager = new ThreadsManager(this.board);
         this.creatureFactory = new CreatureFactory(this.threadsManager);
-        this.observer = new BoardObserver();
+         this.observer = new BoardObserver();
         List<Creature> creatures = this.creatureFactory.getCreatures(4);
         this.observer.subscribe(threadsManager);
         this.observer.subscribe(new ArrayList<>(creatures));
-
         board.initialize(10,10, 1);
         this.food = new FoodDispenser(this.board);
         this.observer.subscribe(food);
@@ -58,8 +57,7 @@ public class Simulation implements Runnable {
             timer += now - lastTime;
             lastTime = now;
             if(delta >= 1){
-                isRunning = update();
-                board.unlockCells();
+                update();
                 ticks++;
                 delta--;
             }
@@ -73,8 +71,7 @@ public class Simulation implements Runnable {
         observer.shout();
     }
 
-    private boolean update() {
+    private void update() {
         observer.shout();
-        return observer.isAliveCreature();
-    }
+        }
 }
