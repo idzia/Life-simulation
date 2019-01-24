@@ -38,11 +38,11 @@ public abstract class AbstractCreature extends Thread implements Creature{
     }
 
     public void move() {
-
-        Directions direction = getRandomDirection();
-            if (manager.moveCreature(this, direction)) {
-                this.setDoneMove(true);
-            }
+        this.strategy.update(manager.cutBoard(this));
+        Directions direction = this.strategy.suggestMove();
+        if (manager.moveCreature(this, direction)) {
+            this.setDoneMove(true);
+        }
     }
 
     @Override

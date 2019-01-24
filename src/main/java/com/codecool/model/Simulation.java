@@ -75,12 +75,9 @@ public class Simulation implements Runnable {
                 ticks = 0;
                 timer = 0;
             }
-
         }
-
         System.out.println("finnish");
         observer.shout();
-
     }
 
     private void update() {
