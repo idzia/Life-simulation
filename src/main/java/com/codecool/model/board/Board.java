@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class Board {
 
-    private Cell[][] board;
+    volatile private Cell[][] board;
     private BoardHelper boardHelper;
     private int width;
     private int height;
@@ -62,7 +62,7 @@ public class Board {
         return board[y][x];
     }
 
-    public Cell[][] getCellsFrom(int x, int y, int radius) {
+    public Cell[][] getCellsFrom(int x, int y, int radius, boolean copy) {
         int h = 2 * radius + 1;
         int w = 2 * radius + 1;
         Cell[][] cellInRange = new Cell[h][w];
@@ -88,8 +88,12 @@ public class Board {
                     temporaryX = -1 - radiusX;
                 }
                 Position p = new Position(i, j);
-                cellInRange[i][j] = board[temporaryY][temporaryX].copy();
-                cellInRange[i][j].setPosition(p);
+                if (copy) {
+                    cellInRange[i][j] = board[temporaryY][temporaryX].copy();
+                    cellInRange[i][j].setPosition(p);
+                } else {
+                    cellInRange[i][j] = board[temporaryY][temporaryX];
+                }
 
                 radiusX--;
             }
@@ -101,7 +105,7 @@ public class Board {
 
     public Cell[][] getCellsFrom(int x, int y) {
         int defaultRadius = 2;
-        return getCellsFrom(x, y, defaultRadius);
+        return getCellsFrom(x, y, defaultRadius, true);
     }
 
     public Cell getNextCell(int column, int row, Directions direction) {

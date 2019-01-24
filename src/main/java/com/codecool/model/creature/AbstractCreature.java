@@ -8,11 +8,11 @@ import com.codecool.model.creature.strategy.BehavioralStrategy;
 import java.util.Random;
 
 public abstract class AbstractCreature extends Thread implements Creature{
-    private int energy = 10;
+    private int energy = 110;
     private int energyPerFood = 5;
     private Position position;
     private BehavioralStrategy strategy;
-    private boolean doneMove =false;
+    volatile private boolean doneMove =false;
     private ThreadsManager manager;
 
     public AbstractCreature(BehavioralStrategy strategy, ThreadsManager manager){
@@ -51,12 +51,8 @@ public abstract class AbstractCreature extends Thread implements Creature{
             while (!this.isDoneMove()) {
                 move();
             }
-            try {
-                sleep(0); //WTF
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
+
         //here we shoudl ask for lock remove.
         manager.unlockDeadCell(this);
     }
@@ -78,13 +74,18 @@ public abstract class AbstractCreature extends Thread implements Creature{
     public int getEnergy() {
         return energy;
     }
+
+    @Override
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
     public boolean isDead() {
        return this.energy <= 0;
     }
 
     public synchronized void eat(){
         this.energy += energyPerFood;
-        System.out.println("mniam");
     }
 
     public BehavioralStrategy getStrategy() {

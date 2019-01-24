@@ -17,7 +17,6 @@ public class Simulation implements Runnable {
     private Board board;
     private BoardObserver observer;
     private boolean isRunning = true;
-    private CreatureFactory creatureFactory;
     private ThreadsManager threadsManager;
     private FoodDispenser food;
 
@@ -28,21 +27,21 @@ public class Simulation implements Runnable {
     }
 
     public void run() {
-        this.threadsManager = new ThreadsManager(this.board);
-        this.creatureFactory = new CreatureFactory(this.threadsManager);
-         this.observer = new BoardObserver();
-        List<Creature> creatures = this.creatureFactory.getCreatures(4);
+        this.observer = new BoardObserver();
+        this.threadsManager = new ThreadsManager(this.board, this.observer);
+        List<Creature> creatures = this.threadsManager.getCreatures(40);
         this.observer.subscribe(threadsManager);
         this.observer.subscribe(new ArrayList<>(creatures));
-        board.initialize(10,10, 1);
+        board.initialize(15,15, 1);
         this.food = new FoodDispenser(this.board);
         this.observer.subscribe(food);
+        food.start();
 
 
 
         board.populate(creatures);
-        this.observer.init();
-        this.view = new WindowedView(board, 500, 500);
+        this.threadsManager.startCreatures(creatures);
+        this.view = new WindowedView(board, 1000, 1000);
 
         int fps = 1; //1x per sec
         double timePerTick = 1000000000 / fps;
@@ -55,11 +54,11 @@ public class Simulation implements Runnable {
 
         while(isRunning){
 
-            if(!observer.isAliveCreature()){
-                System.out.println("");
-                food.interrupt();
-                break;
-            }
+//            if(!observer.isAliveCreature()){
+//                System.out.println("");
+//                food.interrupt();
+//                break;
+//            }
 
             now = System.nanoTime();
             delta += (now - lastTime) / timePerTick;

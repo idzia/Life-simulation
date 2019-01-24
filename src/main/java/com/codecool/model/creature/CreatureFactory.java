@@ -16,11 +16,7 @@ public class CreatureFactory {
         this.counter = 1;
     }
 
-    public List<Creature> getCreatures(int amount) {
-        List<Creature> creatures = new ArrayList<>();
-        for(int i = 0; i < amount; i++) {
-            creatures.add(new Herbivore(new StupidHerbivoreStrategy(), manager));
-        }
-        return creatures;
+    public Creature getCreature(BehavioralStrategy strategy) {
+        return new Herbivore(strategy, manager);
     }
 }
