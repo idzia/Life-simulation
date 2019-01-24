@@ -10,6 +10,8 @@ public class PositionController {
 
     private Position currentPosition;
 
+    public PositionController() {}
+
     public PositionController(Position position) {
         this.currentPosition = position;
     }
@@ -42,7 +44,7 @@ public class PositionController {
         }
 
         for (Directions dir : Directions.values()) {
-            if (dir.equals(directions.get(SN).toString() + directions.get(WE).toString())) {
+            if (dir.toString().equals(directions.get(SN).toString() + directions.get(WE).toString())) {
                 return dir;
             }
         }
@@ -70,7 +72,8 @@ public class PositionController {
         return directions;
     }
 
-    private int calculate(Position position, List<Directions> direction, int distance) {
+    private int calculate(Position pos, List<Directions> direction, int distance) {
+        Position position = new Position(pos.getY(), pos.getX());
         String direct = direction.get(1).toString() + direction.get(0).toString();
 
         if (direct.equals("PASSPASS")) {
@@ -156,5 +159,4 @@ public class PositionController {
         pos.setY(--y);
         return pos;
     }
-
 }

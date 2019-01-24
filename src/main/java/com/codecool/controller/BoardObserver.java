@@ -4,7 +4,6 @@ import com.codecool.model.creature.AbstractCreature;
 import com.codecool.model.creature.Creature;
 import com.codecool.model.creature.Herbivore;
 import com.codecool.model.creature.Subscriber;
-import javafx.beans.InvalidationListener;
 
 import java.util.ArrayList;
 import java.util.List;

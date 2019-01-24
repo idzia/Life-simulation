@@ -1,9 +1,9 @@
 package com.codecool.model.board;
 
-import com.codecool.controller.ThreadsManager;
 import com.codecool.model.Directions;
 import com.codecool.model.Position;
 import com.codecool.model.creature.Creature;
+
 import java.util.List;
 import java.util.Random;
 
