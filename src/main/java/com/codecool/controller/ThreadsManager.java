@@ -7,7 +7,6 @@ import com.codecool.model.board.Cell;
 import com.codecool.model.creature.AbstractCreature;
 import com.codecool.model.creature.Creature;
 import com.codecool.model.creature.CreatureFactory;
-import com.codecool.model.creature.Subscriber;
 import com.codecool.model.creature.strategy.StupidHerbivoreStrategy;
 
 import java.util.ArrayList;
@@ -31,51 +30,63 @@ public class ThreadsManager {
     public synchronized boolean moveCreature(Creature creature, Directions direction) {
         Position current = creature.getPosition();
         if (creature.getEnergy() >= 120) {
-            spawnNewCreature(creature);
+            splitCreature(creature);
             return true;
         } else {
             if (direction.equals(Directions.PASS)) {
-                Cell c = board.getCell(current.getX(), current.getY());
-                if (c.getFoodAmount() > 0) {
-                    creature.eat();
-                    c.reduceFoodAmount(1);
-                }
+                handleEating(creature, current);
                 return true;
             }
-            Cell target = this.board.getNextCell(current.getX(), current.getY(), direction);
-            if (target.isLock()) {
-                return false;
-            } else {
-                this.board.lockCell(this.board.getNextCell(current.getX(), current.getY(), direction));
-                this.board.moveCreature(current, direction);
-                this.board.getCell(current.getX(), current.getY()).unlock();
-                return true;
-            }
+            return makeMove(direction, current);
         }
     }
 
-    private void spawnNewCreature(Creature creature) {
+    private void handleEating(Creature creature, Position current) {
+        Cell c = board.getCell(current.getX(), current.getY());
+        if (c.getFoodAmount() > 0) {
+            creature.eat();
+            c.reduceFoodAmount(1);
+        }
+    }
+
+    private boolean makeMove(Directions direction, Position current) {
+        Cell target = this.board.getNextCell(current.getX(), current.getY(), direction);
+        if (target.isLock()) {
+            return false;
+        } else {
+            this.board.lockCell(this.board.getNextCell(current.getX(), current.getY(), direction));
+            this.board.moveCreature(current, direction);
+            this.board.getCell(current.getX(), current.getY()).unlock();
+            return true;
+        }
+    }
+
+    private void splitCreature(Creature creature) {
         Cell cell = findCellToSpawn(board.getCellsFrom(creature.getPosition().getX(), creature.getPosition().getY(), 1, false));
         if (cell != null) {
-            int energy = creature.getEnergy() / 2;
-            Creature newCreature = factory.getCreature(new StupidHerbivoreStrategy());
-            cell.setCreature(newCreature);
-            newCreature.setPosition(cell.getPosition());
-            newCreature.setEnergy(energy);
-            creature.setEnergy(energy);
-            startCreature((AbstractCreature) newCreature);
-            this.obs.subscribe(newCreature);
+            spawnNewCreature(creature, cell);
         } else {
             creature.setEnergy(creature.getEnergy() / 2);
         }
     }
 
+    private void spawnNewCreature(Creature creature, Cell cell) {
+        int energy = creature.getEnergy() / 2;
+        Creature newCreature = factory.getCreature(new StupidHerbivoreStrategy());
+        cell.setCreature(newCreature);
+        newCreature.setPosition(cell.getPosition());
+        newCreature.setEnergy(energy);
+        creature.setEnergy(energy);
+        startCreature((AbstractCreature) newCreature);
+        this.obs.subscribe(newCreature);
+    }
+
     private Cell findCellToSpawn(Cell[][] surrounding) {
-        for (int i=0;i<surrounding.length;i++) {
-            for(int j=0;j<surrounding[i].length;j++) {
-                if (!surrounding[i][j].isLock()) {
-                    surrounding[i][j].lock();
-                    return surrounding[i][j];
+        for (Cell[] cells : surrounding) {
+            for (Cell cell : cells) {
+                if (!cell.isLock()) {
+                    cell.lock();
+                    return cell;
                 }
             }
         }
