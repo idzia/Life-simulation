@@ -70,6 +70,7 @@ public class Simulation implements Runnable {
         }
         System.out.println("finnish");
         observer.shout();
+        board.unlockCells();
     }
 
     private boolean update() {
