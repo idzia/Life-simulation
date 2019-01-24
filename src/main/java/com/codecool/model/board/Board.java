@@ -1,13 +1,9 @@
 package com.codecool.model.board;
 
-import com.codecool.controller.ThreadsManager;
 import com.codecool.model.Directions;
-import com.codecool.model.creature.Herbivore;
 import com.codecool.model.Position;
 import com.codecool.model.creature.Creature;
-import com.codecool.model.creature.strategy.HerbivoreBehavioralStrategy;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -35,7 +31,9 @@ public class Board {
         for (int i = 0; i < height; i++) {
 
             for (int j = 0; j < width; j++) {
+                Position p = new Position(i, j);
                 board[i][j] = new Cell();
+                board[i][j].setPosition(p);
             }
         }
         return board;
@@ -91,9 +89,9 @@ public class Board {
                 } else if (temporaryX >= width) {
                     temporaryX = -1 - radiusX;
                 }
-
-                cellInRange[i][j] = board[temporaryY][temporaryX];
-
+                Position p = new Position(i, j);
+                cellInRange[i][j] = board[temporaryY][temporaryX].copy();
+                cellInRange[i][j].setPosition(p);
 
                 radiusX--;
             }
@@ -139,11 +137,11 @@ public class Board {
     }
 
     private void addFood(int x, int y) {
-        board[y][x].addFoodAmmount(1);
+        board[y][x].addFoodAmount(1);
     }
 
     public void reduceFood(int x, int y) {
-        board[y][x].reduceFoodAmmount(1);
+        board[y][x].reduceFoodAmount(1);
     }
 
     public boolean lockCell(Cell nextCell) {
