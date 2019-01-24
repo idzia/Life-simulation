@@ -13,12 +13,23 @@ public class Tile implements TileInterface {
     protected BufferedImage lock = Assets.none;
     protected BufferedImage finalTile;
 
-    public Tile(int foodQuantity, int creatureType){
+    public Tile(int foodQuantity, int creatureType, int lock){
 
         getFoodAsset(foodQuantity);
         getCreatureAsset(creatureType);
-        finalTile = joinBufferedImage(background,food,creature,lock);
+        getLockAsset(lock);
+        finalTile = joinBufferedImage(background,food,this.lock,creature);
 
+    }
+
+    private void getLockAsset(int lock) {
+        switch (lock) {
+            case 1:
+                this.lock = Assets.lock;
+                break;
+            default:
+                this.lock = Assets.none;
+        }
     }
 
     public void render(Graphics g, int x, int y){

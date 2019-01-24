@@ -52,7 +52,12 @@ public class BoardObserver implements Observer {
 
     public void init() {
         for(Subscriber sub : subscribers){
-            if(sub instanceof Creature) new Thread((AbstractCreature)sub).start();
+            if(sub instanceof Creature) {
+                Thread cow = new Thread((AbstractCreature)sub);
+                cow.setDaemon(true);
+                cow.start();
+
+            }
         }
     }
 }

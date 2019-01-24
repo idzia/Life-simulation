@@ -1,13 +1,9 @@
 package com.codecool.model.board;
 
-import com.codecool.controller.ThreadsManager;
 import com.codecool.model.Directions;
-import com.codecool.model.creature.Herbivore;
 import com.codecool.model.Position;
 import com.codecool.model.creature.Creature;
-import com.codecool.model.creature.strategy.HerbivoreStrategy;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -50,6 +46,7 @@ public class Board {
                 y = generator.nextInt(height);
                 x = generator.nextInt(width);
             }
+            board[y][x].lock();
             Position p = new Position();
             p.setY(y);
             p.setX(x);
@@ -115,13 +112,15 @@ public class Board {
         return boardHelper.getNextCell(pos, direction);
     }
 
-    public void moveCreature(Position currentPos, Directions direction) {
+    public synchronized void moveCreature(Position currentPos, Directions direction) {
         Cell currentCell = board[currentPos.getY()][currentPos.getX()];
         Position targetPosition = boardHelper.getPositionOfCellInDirection(currentPos, direction);
-        if (targetPosition != currentPos) {
+        if (targetPosition != currentPos && currentCell.getCurrentCreature()!=null) {
             Cell target = board[targetPosition.getY()][targetPosition.getX()];
             currentCell.getCurrentCreature().setPosition(targetPosition);
             swapCells(currentCell, target);
+        } else {
+            currentCell.unlock();
         }
     }
 

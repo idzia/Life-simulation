@@ -53,8 +53,8 @@ public class TileBoard {
                 .getTile(
                         new ArrayList<>(Arrays.asList(
                                 current.getFoodAmmount(),
-                                getIntRepresentationOfCreature(current.getCurrentCreature()
-                                )
+                                getIntRepresentationOfCreature(current.getCurrentCreature())
+                                ,current.isLock() ? 1:0
                         ))
                 );
         return t;
