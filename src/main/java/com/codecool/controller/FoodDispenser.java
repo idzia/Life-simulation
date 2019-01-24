@@ -14,6 +14,7 @@ public class FoodDispenser extends Thread implements Subscriber {
     private int width;
     int startFoodQuantity;
     int cauntTurn = 0;
+    boolean isInit = true;
 
 
     public FoodDispenser(Board board) {
@@ -24,6 +25,7 @@ public class FoodDispenser extends Thread implements Subscriber {
 
     }
 
+
     public void switchTurn() {
         isNewTurn = !isNewTurn;
 
@@ -31,7 +33,7 @@ public class FoodDispenser extends Thread implements Subscriber {
 
     public void onNotify(){
 
-        if (cauntTurn > 5) {
+        if (cauntTurn > 2) {
             switchTurn();
             cauntTurn = 0;
         }
@@ -39,14 +41,17 @@ public class FoodDispenser extends Thread implements Subscriber {
     }
 
     public void run() {
-        setFood(startFoodQuantity/5);
-        while(!this.interrupted()) {
-
-            if (isNewTurn) {
+        while(!this.isInterrupted()) {
+            if (isInit) {
                 setFood(startFoodQuantity/10);
+                isInit = false;
+            }
+            if (isNewTurn) {
+                setFood(startFoodQuantity/50);
                 switchTurn();
             }
         }
+
     }
 
     public void setFood(int foodQuantity) {

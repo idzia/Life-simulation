@@ -38,6 +38,8 @@ public class Simulation implements Runnable {
         this.food = new FoodDispenser(this.board);
         this.observer.subscribe(food);
 
+
+
         board.populate(creatures);
         this.observer.init();
         this.view = new WindowedView(board, 500, 500);
@@ -52,6 +54,13 @@ public class Simulation implements Runnable {
 
 
         while(isRunning){
+
+            if(!observer.isAliveCreature()){
+                System.out.println("");
+                food.interrupt();
+                break;
+            }
+
             now = System.nanoTime();
             delta += (now - lastTime) / timePerTick;
             timer += now - lastTime;
@@ -66,7 +75,9 @@ public class Simulation implements Runnable {
                 ticks = 0;
                 timer = 0;
             }
+
         }
+
         System.out.println("finnish");
         observer.shout();
 
