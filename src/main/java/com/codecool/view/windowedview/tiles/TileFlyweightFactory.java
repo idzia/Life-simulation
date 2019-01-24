@@ -12,7 +12,7 @@ public class TileFlyweightFactory {
 
     public static Tile getTile(ArrayList<Integer> params) {
         Tile computedTile = tileCache.computeIfAbsent(params, tile -> {
-            Tile newTile = new Tile(params.get(0), params.get(1));
+            Tile newTile = new Tile(params.get(0), params.get(1), params.get(2));
             return newTile;
         });
         return computedTile;

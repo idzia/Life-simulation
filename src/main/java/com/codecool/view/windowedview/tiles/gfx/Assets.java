@@ -8,7 +8,7 @@ public class Assets {
 
     public static BufferedImage ground;
     public static BufferedImage[] food = new BufferedImage[FOOD_QUANTITY];
-    public static BufferedImage herbivore, predator,none;
+    public static BufferedImage herbivore, predator,none,lock;
 
     public static void init() {
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/TileSet.png"));
@@ -23,5 +23,6 @@ public class Assets {
         herbivore = sheet.crop(width * 0, height*1, width, height);
         predator = sheet.crop(width * 1, height*1, width, height);
         none = sheet.crop(width * 3, height*1, width, height);
+        lock = sheet.crop(width * 2, height*1, width, height);
     }
 }
