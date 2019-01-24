@@ -58,4 +58,10 @@ public class ThreadsManager implements Subscriber {
     public void onNotify() {
         removeDeadCreatures();
     }
+
+    public void unlockDeadCell(AbstractCreature c) {
+        Position current = c.getPosition();
+        Cell target = this.board.getCell(current.getX(), current.getY());
+        target.unlock();
+    }
 }

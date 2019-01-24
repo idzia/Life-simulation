@@ -4,7 +4,6 @@ import com.codecool.model.creature.AbstractCreature;
 import com.codecool.model.creature.Creature;
 import com.codecool.model.creature.Herbivore;
 import com.codecool.model.creature.Subscriber;
-import javafx.beans.InvalidationListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +52,12 @@ public class BoardObserver implements Observer {
 
     public void init() {
         for(Subscriber sub : subscribers){
-            if(sub instanceof Creature) new Thread((AbstractCreature)sub).start();
+            if(sub instanceof Creature) {
+                Thread cow = new Thread((AbstractCreature)sub);
+                cow.setDaemon(true);
+                cow.start();
+
+            }
         }
     }
 }
