@@ -9,4 +9,5 @@ public interface BehavioralStrategy {
     Directions suggestMove();
     void setBoardView(Cell[][] board);
     void setCoordinates(Position currentPosition);
+    void update(Cell[][] board);
 }
