@@ -12,9 +12,9 @@ public class FoodDispenser extends Thread implements Subscriber {
     private Board board;
     private int height;
     private int width;
-    int startFoodQuantity;
-    int cauntTurn = 0;
-    boolean isInit = true;
+    private int startFoodQuantity;
+    private int cauntTurn = 0;
+    private boolean isInit = true;
 
 
     public FoodDispenser(Board board) {
@@ -26,7 +26,7 @@ public class FoodDispenser extends Thread implements Subscriber {
     }
 
 
-    public void switchTurn() {
+    private void switchTurn() {
         isNewTurn = !isNewTurn;
 
     }
@@ -54,7 +54,7 @@ public class FoodDispenser extends Thread implements Subscriber {
 
     }
 
-    public void setFood(int foodQuantity) {
+    private void setFood(int foodQuantity) {
         Random generator = new Random();
         for (int i = 0; i < (foodQuantity); i++) {
             board.addFood(generator.nextInt(width), generator.nextInt(height));
