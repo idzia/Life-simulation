@@ -1,15 +1,15 @@
 package com.codecool.model.board;
 
 import com.codecool.model.Directions;
-import com.codecool.model.creature.Herbivore;
 import com.codecool.model.Position;
 import com.codecool.model.creature.Creature;
 
+import java.util.List;
 import java.util.Random;
 
 public class Board {
 
-    private Cell[][] board;
+    volatile private Cell[][] board;
     private BoardHelper boardHelper;
     private int width;
     private int height;
@@ -19,10 +19,6 @@ public class Board {
         this.board = createBoard(width, height);
         setWidth(width);
         setHeight(height);
-        int startFoodQuantity = 2 * (width * height);
-
-        populate(width, height, populateQuantity);
-        setFood(startFoodQuantity);
         this.boardHelper = new BoardHelper(this);
     }
 
@@ -32,29 +28,30 @@ public class Board {
         for (int i = 0; i < height; i++) {
 
             for (int j = 0; j < width; j++) {
+                Position p = new Position(i, j);
                 board[i][j] = new Cell();
+                board[i][j].setPosition(p);
             }
         }
         return board;
     }
 
-    private void populate(int width, int height, int quantity) {
+    public void populate(List<Creature> creatures) {
         Random generator = new Random();
-        int i = 0;
-        while (i < quantity) {
-            int y = generator.nextInt(height);
-            int x = generator.nextInt(width);
-            if (board[y][x].getCurrentCreature() == null) {
-                Creature creature = new Herbivore();
-                Position p = new Position();
-                p.setY(y);
-                p.setX(x);
-                ((Herbivore) creature).setPosition(p);
-                board[y][x].setCreature(creature);
-                i++;
+        int x = generator.nextInt(width);
+        int y = generator.nextInt(height);
+        for (Creature creature : creatures) {
+            while (board[y][x].getCurrentCreature() != null) {
+                y = generator.nextInt(height);
+                x = generator.nextInt(width);
             }
+            board[y][x].lock();
+            Position p = new Position();
+            p.setY(y);
+            p.setX(x);
+            creature.setPosition(p);
+            board[y][x].setCreature(creature);
         }
-
     }
 
     public Cell[][] getBoard() {
@@ -65,7 +62,7 @@ public class Board {
         return board[y][x];
     }
 
-    public Cell[][] getCellsFrom(int x, int y, int radius) {
+    public Cell[][] getCellsFrom(int x, int y, int radius, boolean copy) {
         int h = 2 * radius + 1;
         int w = 2 * radius + 1;
         Cell[][] cellInRange = new Cell[h][w];
@@ -90,9 +87,13 @@ public class Board {
                 } else if (temporaryX >= width) {
                     temporaryX = -1 - radiusX;
                 }
-
-                cellInRange[i][j] = board[temporaryY][temporaryX];
-
+                Position p = new Position(i, j);
+                if (copy) {
+                    cellInRange[i][j] = board[temporaryY][temporaryX].copy();
+                    cellInRange[i][j].setPosition(p);
+                } else {
+                    cellInRange[i][j] = board[temporaryY][temporaryX];
+                }
 
                 radiusX--;
             }
@@ -104,7 +105,7 @@ public class Board {
 
     public Cell[][] getCellsFrom(int x, int y) {
         int defaultRadius = 2;
-        return getCellsFrom(x, y, defaultRadius);
+        return getCellsFrom(x, y, defaultRadius, true);
     }
 
     public Cell getNextCell(int column, int row, Directions direction) {
@@ -114,12 +115,16 @@ public class Board {
         return boardHelper.getNextCell(pos, direction);
     }
 
-    public void moveCreature(Position currentPos, Directions direction) {
+    public synchronized void moveCreature(Position currentPos, Directions direction) {
         Cell currentCell = board[currentPos.getY()][currentPos.getX()];
         Position targetPosition = boardHelper.getPositionOfCellInDirection(currentPos, direction);
-        Cell target = board[targetPosition.getY()][targetPosition.getX()];
-        currentCell.getCurrentCreature().setPosition(targetPosition);
-        swapCells(currentCell, target);
+        if (targetPosition != currentPos && currentCell.getCurrentCreature()!=null) {
+            Cell target = board[targetPosition.getY()][targetPosition.getX()];
+            currentCell.getCurrentCreature().setPosition(targetPosition);
+            swapCells(currentCell, target);
+        } else {
+            currentCell.unlock();
+        }
     }
 
 
@@ -135,12 +140,12 @@ public class Board {
         current.setCreature(null);
     }
 
-    private void addFood(int x, int y) {
-        board[y][x].addFoodAmmount(1);
+    public void addFood(int x, int y) {
+        board[y][x].addFoodAmount(1);
     }
 
     public void reduceFood(int x, int y) {
-        board[y][x].reduceFoodAmmount(1);
+        board[y][x].reduceFoodAmount(1);
     }
 
     public boolean lockCell(Cell nextCell) {
@@ -149,8 +154,6 @@ public class Board {
             return true;
         }
         return false;
-
-
     }
 
     public void unlockCells() {
@@ -158,7 +161,9 @@ public class Board {
         for (int i = 0; i < height; i++) {
 
             for (int j = 0; j < width; j++) {
-                board[i][j].setLock(false);
+                if (board[i][j].getCurrentCreature() == null) {
+                    board[i][j].setLock(false);
+                }
             }
         }
     }
@@ -170,4 +175,30 @@ public class Board {
     public void setHeight(int height) {
         this.height = height;
     }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public Cell[][] getCellsFrom(Position position) {
+        return getCellsFrom(position.getX(), position.getY());
+    }
+
+    public int countFoodCell() {
+        int foodCells = 0;
+        for (int i = 0; i < height; i++) {
+
+            for (int j = 0; j < width; j++) {
+                if (board[i][j].getFoodAmount()>0) {
+                    foodCells++;
+                }
+            }
+        }
+        return foodCells;
+    }
+
 }

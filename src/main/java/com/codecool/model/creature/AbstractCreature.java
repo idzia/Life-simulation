@@ -1,47 +1,101 @@
 package com.codecool.model.creature;
 
+import com.codecool.controller.ThreadsManager;
+import com.codecool.model.Directions;
 import com.codecool.model.Position;
 import com.codecool.model.creature.strategy.BehavioralStrategy;
 
-public abstract class AbstractCreature {
-    private int energy = 100;
-    Position position;
-//    private BehavioralStrategy strategy;
-    private int speed = 1;
+import java.util.Random;
 
-//    public AbstractCreature(BehavioralStrategy strategy){
-//        this.strategy = strategy;
-//    }
+public abstract class AbstractCreature extends Thread implements Creature{
+    private int energy = 110;
+    private int energyPerFood = 5;
+    private Position position;
+    private BehavioralStrategy strategy;
+    volatile private boolean doneMove =false;
+    private ThreadsManager manager;
 
-    public AbstractCreature(){
+    public AbstractCreature(BehavioralStrategy strategy, ThreadsManager manager){
+        this.strategy = strategy;
+        this.manager = manager;
+    }
 
+    // for test usage
+    private Directions getRandomDirection() {
+        Random random = new Random();
+        switch (random.nextInt(7)) {
+            case 0:
+                return Directions.N;
+            case 1:
+                return Directions.E;
+            case 2:
+                return Directions.W;
+            case 3:
+                return Directions.S;
+            default:
+                    return Directions.PASS;
+        }
+    }
+
+    public void move() {
+        this.strategy.update(manager.cutBoard(this));
+        Directions direction = this.strategy.suggestMove();
+        if (manager.moveCreature(this, direction)) {
+            this.setDoneMove(true);
+        }
+    }
+
+    @Override
+    public void run() {
+        while (!this.isDead()) {
+            while (!this.isDoneMove()) {
+                move();
+            }
+        }
+
+        //here we shoudl ask for lock remove.
+        manager.unlockDeadCell(this);
+    }
+
+    public void onNotify(){
+        this.starve();
+
+        this.setDoneMove(false);
+    }
+
+
+    public void starve(int value){
+        this.energy -= value;
+    }
+    public void starve(){
+        this.energy --;
     }
 
     public int getEnergy() {
         return energy;
     }
-    public boolean isAlive() {
-       return this.energy > 0;
+
+    @Override
+    public void setEnergy(int energy) {
+        this.energy = energy;
     }
 
-    public void eat(int value){
-        this.energy += value;
-    }
-    public void starve(int value){
-        this.energy -= value;
+    public boolean isDead() {
+       return this.energy <= 0;
     }
 
-//    public BehavioralStrategy getStrategy() {
-//        return strategy;
-//    }
-//
-//    public void setStrategy(BehavioralStrategy strategy) {
-//        this.strategy = strategy;
-//    }
-
-    public int getSpeed() {
-        return speed;
+    public synchronized void eat(){
+        this.energy += energyPerFood;
     }
+
+    public BehavioralStrategy getStrategy() {
+        return strategy;
+    }
+
+    public void setStrategy(BehavioralStrategy strategy) {
+        this.strategy = strategy;
+    }
+
 
     public Position getPosition() {
         return position;
@@ -49,5 +103,17 @@ public abstract class AbstractCreature {
 
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    public boolean isDoneMove() {
+        return doneMove;
+    }
+
+    public void setDoneMove(boolean doneMove) {
+        this.doneMove = doneMove;
+    }
+
+    public ThreadsManager getManager() {
+        return manager;
     }
 }
