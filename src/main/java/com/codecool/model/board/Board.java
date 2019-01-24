@@ -1,10 +1,14 @@
 package com.codecool.model.board;
 
+import com.codecool.controller.ThreadsManager;
 import com.codecool.model.Directions;
 import com.codecool.model.creature.Herbivore;
 import com.codecool.model.Position;
 import com.codecool.model.creature.Creature;
+import com.codecool.model.creature.strategy.HerbivoreBehavioralStrategy;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Board {
@@ -21,7 +25,6 @@ public class Board {
         setHeight(height);
         int startFoodQuantity = 2 * (width * height);
 
-        populate(width, height, populateQuantity);
         setFood(startFoodQuantity);
         this.boardHelper = new BoardHelper(this);
     }
@@ -38,23 +41,21 @@ public class Board {
         return board;
     }
 
-    private void populate(int width, int height, int quantity) {
+    public void populate(List<Creature> creatures) {
         Random generator = new Random();
-        int i = 0;
-        while (i < quantity) {
-            int y = generator.nextInt(height);
-            int x = generator.nextInt(width);
-            if (board[y][x].getCurrentCreature() == null) {
-                Creature creature = new Herbivore();
-                Position p = new Position();
-                p.setY(y);
-                p.setX(x);
-                ((Herbivore) creature).setPosition(p);
-                board[y][x].setCreature(creature);
-                i++;
+        int x = generator.nextInt(width);
+        int y = generator.nextInt(height);
+        for (Creature creature : creatures) {
+            while (board[y][x].getCurrentCreature() != null) {
+                y = generator.nextInt(height);
+                x = generator.nextInt(width);
             }
+            Position p = new Position();
+            p.setY(y);
+            p.setX(x);
+            creature.setPosition(p);
+            board[y][x].setCreature(creature);
         }
-
     }
 
     public Cell[][] getBoard() {
@@ -117,9 +118,11 @@ public class Board {
     public void moveCreature(Position currentPos, Directions direction) {
         Cell currentCell = board[currentPos.getY()][currentPos.getX()];
         Position targetPosition = boardHelper.getPositionOfCellInDirection(currentPos, direction);
-        Cell target = board[targetPosition.getY()][targetPosition.getX()];
-        currentCell.getCurrentCreature().setPosition(targetPosition);
-        swapCells(currentCell, target);
+        if (targetPosition != currentPos) {
+            Cell target = board[targetPosition.getY()][targetPosition.getX()];
+            currentCell.getCurrentCreature().setPosition(targetPosition);
+            swapCells(currentCell, target);
+        }
     }
 
 
@@ -158,7 +161,9 @@ public class Board {
         for (int i = 0; i < height; i++) {
 
             for (int j = 0; j < width; j++) {
-                board[i][j].setLock(false);
+                if (board[i][j].getCurrentCreature() == null) {
+                    board[i][j].setLock(false);
+                }
             }
         }
     }
@@ -169,5 +174,9 @@ public class Board {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public Cell[][] getCellsFrom(Position position) {
+        return getCellsFrom(position.getX(), position.getY());
     }
 }

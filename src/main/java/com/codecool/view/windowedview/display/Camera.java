@@ -1,6 +1,7 @@
 package com.codecool.view.windowedview.display;
 
 import com.codecool.view.windowedview.WindowHandler;
+import com.codecool.view.windowedview.tiles.Tile;
 
 public class Camera {
     public static final float DEFAULT_SPEED = 3.0f;
@@ -15,30 +16,33 @@ public class Camera {
         this.yOffset = yOffset;
     }
 
-    public void checkBlankSpace(){
+    public void checkBlankSpace() throws NullPointerException{
         if(xOffset < 0){
             xOffset = 0;
- //       }else if(xOffset > windowHandler.getBoard().getWidth() * Tile.TILEWIDTH - windowHandler.getWidth()){
- //           xOffset = windowHandler.getLevel1().getWidth() * Tile.TILEWIDTH - windowHandler.getWidth();
+        }else if(xOffset > windowHandler.getBoardWidth() * Tile.TILEWIDTH - windowHandler.getWidth()){
+            xOffset = windowHandler.getBoardWidth() * Tile.TILEWIDTH - windowHandler.getWidth();
         }
 
         if(yOffset < 0){
             yOffset = 0;
- //       }else if(yOffset > windowHandler.getLevel1().getHeight() * Tile.TILEHEIGHT - windowHandler.getHeight()){
- //           yOffset = windowHandler.getLevel1().getHeight() * Tile.TILEHEIGHT - windowHandler.getHeight();
+        }else if(yOffset > windowHandler.getBoardHeight() * Tile.TILEHEIGHT - windowHandler.getHeight()){
+            yOffset = windowHandler.getBoardHeight() * Tile.TILEHEIGHT - windowHandler.getHeight();
         }
     }
 
-    public void centerOn(int x,int y){
-        xOffset = x - windowHandler.getWidth() / 2;
-        yOffset = y - windowHandler.getHeight() / 2;
-        //checkBlankSpace();
+    public void centerOnEntity(CamerMan e){
+        xOffset = e.getX() - windowHandler.getWidth() / 2 + 64 / 2;
+        yOffset = e.getY() - windowHandler.getHeight() / 2 + 64 / 2;
+        checkBlankSpace();
     }
 
     public void move(float xAmt, float yAmt){
         xOffset += xAmt;
         yOffset += yAmt;
-        //checkBlankSpace();
+        try{
+        checkBlankSpace();} catch (NullPointerException e){
+            System.out.println("board not yet created");
+        }
     }
 
     public float getxOffset() {
