@@ -8,7 +8,7 @@ import com.codecool.model.creature.strategy.BehavioralStrategy;
 import java.util.Random;
 
 public abstract class AbstractCreature extends Thread implements Creature{
-    private int energy = 110;
+    private int energy = 5;
     private int energyPerFood = 5;
     private Position position;
     private BehavioralStrategy strategy;

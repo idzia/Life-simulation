@@ -27,8 +27,7 @@ public class Simulation implements Runnable {
     }
 
     public void run() {
-        List<Creature> creatures = this.threadsManager.getCreatures(40);
-        this.observer.subscribe(threadsManager);
+        List<Creature> creatures = this.threadsManager.getCreatures(2);
         this.observer.subscribe(new ArrayList<>(creatures));
         this.board.initialize(15,15, 1);
         FoodDispenser food = new FoodDispenser(this.board);

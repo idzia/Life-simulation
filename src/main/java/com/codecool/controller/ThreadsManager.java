@@ -13,7 +13,7 @@ import com.codecool.model.creature.strategy.StupidHerbivoreStrategy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ThreadsManager implements Subscriber {
+public class ThreadsManager {
     volatile private Board board;
     private CreatureFactory factory;
     volatile  private Observer obs;
@@ -26,18 +26,6 @@ public class ThreadsManager implements Subscriber {
 
     public Cell[][] cutBoard(Creature creature) {
         return board.getCellsFrom(creature.getPosition());
-    }
-
-    private void removeDeadCreatures(){
-        for (Cell[] row : board.getBoard()) {
-            for(Cell cell : row) {
-                Creature creature = cell.getCurrentCreature();
-                if (creature != null && creature.isDead()) {
-                    cell.setCreature(null);
-                    cell.unlock();
-                }
-            }
-        }
     }
 
     public synchronized boolean moveCreature(Creature creature, Directions direction) {
@@ -110,18 +98,14 @@ public class ThreadsManager implements Subscriber {
 
     private synchronized void startCreature(AbstractCreature creature) {
         Thread cow = new Thread(creature);
-        cow.setDaemon(true);
+        cow.setPriority(1);
         cow.start();
-    }
-
-    @Override
-    public void onNotify() {
-        removeDeadCreatures();
     }
 
     public void unlockDeadCell(AbstractCreature c) {
         Position current = c.getPosition();
         Cell target = this.board.getCell(current.getX(), current.getY());
         target.unlock();
+        target.setCreature(null);
     }
 }
