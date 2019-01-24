@@ -2,25 +2,30 @@ package com.codecool.view.windowedview;
 
 import com.codecool.view.windowedview.display.Camera;
 import com.codecool.view.windowedview.input.KeyManager;
+import com.codecool.view.windowedview.tiles.TileBoard;
 
 public class WindowHandler {
 
-    private Camera camera = new Camera(this, 0,0);
-    private KeyManager keyManager = new KeyManager();
-    private int width=1800,height=800;
-    private WindowRunnable loop;
+    private final TileBoard tileboard;
+    private int width,height, boardWidth, boardHeight;
+    private WindowRunnable windowRunnable;
 
 
-    public WindowHandler(WindowRunnable loop){
-        this.loop = loop;
+    public WindowHandler(WindowRunnable windowRunnable, int width, int height, int boardWidth, int boardHeight){
+        this.windowRunnable = windowRunnable;
+        this.width = width;
+        this.height = height;
+        this.boardHeight = boardHeight;
+        this.boardWidth = boardWidth;
+        this.tileboard = windowRunnable.getBoard();
     }
 
     public Camera getGameCamera(){
-        return camera;
+        return windowRunnable.getCamera();
     }
 
     public KeyManager getKeyManager(){
-        return keyManager;
+        return windowRunnable.getKeyManager();
     }
 
 
@@ -30,5 +35,15 @@ public class WindowHandler {
 
     public int getHeight(){
         return height;
+    }
+
+    public TileBoard getTileboard() {return tileboard;}
+
+    public int getBoardWidth() {
+        return boardWidth;
+    }
+
+    public int getBoardHeight() {
+        return boardHeight;
     }
 }

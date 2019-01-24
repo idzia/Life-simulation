@@ -9,10 +9,7 @@ import com.codecool.view.windowedview.WindowedView;
 public class App {
 
     public static void main(String[] args){
-        Board board =new Board();
-        View view = new WindowedView(board);
-        view.draw(board);
 
-        new Simulation(view, board).run();
+        new Simulation().run();
     }
 }
