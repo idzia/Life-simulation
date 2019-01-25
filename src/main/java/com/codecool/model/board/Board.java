@@ -15,7 +15,7 @@ public class Board {
     private int height;
 
 
-    public void initialize(int width, int height, int populateQuantity) {
+    public void initialize(int width, int height) {
         this.board = createBoard(width, height);
         setWidth(width);
         setHeight(height);

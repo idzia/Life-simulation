@@ -27,9 +27,9 @@ public class Simulation implements Runnable {
     }
 
     public void run() {
-        List<Creature> creatures = this.threadsManager.getCreatures(4);
+        List<Creature> creatures = this.threadsManager.getCreatures(1);
         this.observer.subscribe(new ArrayList<>(creatures));
-        this.board.initialize(15,15, 1);
+        this.board.initialize(15,15);
         FoodDispenser food = new FoodDispenser(this.board);
         this.observer.subscribe(food);
         food.start();
@@ -38,7 +38,7 @@ public class Simulation implements Runnable {
         this.threadsManager.startCreatures(creatures);
         this.view = new WindowedView(board, 1000, 1000);
 
-        int fps = 1; //1x per sec
+        int fps = 60; //1x per sec
         double timePerTick = 1000000000 / fps;
         double delta = 0;
         long now;
