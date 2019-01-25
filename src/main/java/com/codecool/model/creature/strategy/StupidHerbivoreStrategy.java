@@ -7,6 +7,7 @@ import com.codecool.model.board.Cell;
 
 import java.util.*;
 
+//TODO: remove unused methods
 public class StupidHerbivoreStrategy extends HerbivoreStrategy {
 
 

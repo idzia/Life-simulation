@@ -3,6 +3,11 @@ package com.codecool.model.board;
 import com.codecool.model.Directions;
 import com.codecool.model.Position;
 
+// TODO: refactor cell getters
+// TODO : move here methods from Board
+// TODO: move it to the controller package
+// TODO: change as many methods functional
+
 class BoardHelper {
     private Board board;
 

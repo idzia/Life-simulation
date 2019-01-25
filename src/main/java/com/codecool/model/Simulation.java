@@ -12,6 +12,8 @@ import com.codecool.view.windowedview.WindowedView;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO: move it to controller package
+//TODO: use configuration class or file
 public class Simulation implements Runnable {
     private View view;
     private Board board;

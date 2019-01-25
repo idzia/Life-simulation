@@ -7,6 +7,8 @@ import com.codecool.model.creature.Creature;
 import java.util.List;
 import java.util.Random;
 
+//TODO: switch fields to Atomic
+//TODO: change as many methods functional
 public class Board {
 
     volatile private Cell[][] board;
@@ -14,7 +16,7 @@ public class Board {
     private int width;
     private int height;
 
-
+    // TODO: move it to BoardHelper
     public void initialize(int width, int height) {
         this.board = createBoard(width, height);
         setWidth(width);
@@ -36,6 +38,7 @@ public class Board {
         return board;
     }
 
+    //TODO: move it to BoardHelper
     public void populate(List<Creature> creatures) {
         Random generator = new Random();
         int x = generator.nextInt(width);
@@ -54,6 +57,7 @@ public class Board {
         }
     }
 
+    //TODO: move it to BoardHelper
     public Cell[][] getBoard() {
         return board;
     }
@@ -62,6 +66,7 @@ public class Board {
         return board[y][x];
     }
 
+    //TODO: move it to BoardHelper
     public Cell[][] getCellsFrom(int x, int y, int radius, boolean copy) {
         int h = 2 * radius + 1;
         int w = 2 * radius + 1;
@@ -104,15 +109,18 @@ public class Board {
     }
 
 
+    //TODO: move it to BoardHelper
     public Cell[][] getCellsFrom(int column, int row) {
         int defaultRadius = 2;
         return getCellsFrom(column, row, defaultRadius, true);
     }
 
+    //TODO: move it to BoardHelper
     public Cell[][] getCellsFrom(Position position) {
         return getCellsFrom(position.getX(), position.getY());
     }
 
+    //TODO: move it to BoardHelper
     public Cell getNextCell(int column, int row, Directions direction) {
         Position pos = new Position();
         pos.setY(row);
@@ -120,6 +128,7 @@ public class Board {
         return boardHelper.getNextCell(pos, direction);
     }
 
+    //TODO: move it to BoardHelper
     public synchronized void moveCreature(Position currentPos, Directions direction) {
         Cell currentCell = board[currentPos.getY()][currentPos.getX()];
         Position targetPosition = boardHelper.getPositionOfCellInDirection(currentPos, direction);
@@ -132,6 +141,7 @@ public class Board {
         }
     }
 
+    //TODO: move it to BoardHelper
     private void swapCells(Cell current, Cell target) {
         target.setCreature(current.getCurrentCreature());
         current.setCreature(null);
@@ -145,6 +155,7 @@ public class Board {
         board[y][x].reduceFoodAmount(1);
     }
 
+    //TODO: move it to BoardHelper
     public void lockCell(Cell nextCell) {
         if (!(nextCell.isLock())) {
             nextCell.setLock(true);
@@ -167,6 +178,7 @@ public class Board {
         return height;
     }
 
+    //TODO: move it to BoardHelper
     public int countFoodCell() {
         int foodCells = 0;
         for (int i = 0; i < height; i++) {
