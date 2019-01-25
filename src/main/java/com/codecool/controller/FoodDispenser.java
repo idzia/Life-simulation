@@ -7,6 +7,8 @@ import com.codecool.model.creature.Subscriber;
 
 import java.util.Random;
 
+// TODO: remove unused methods
+// TODO: switch fields to Atomic
 public class FoodDispenser extends Thread implements Subscriber {
     private volatile boolean isNewTurn = false;
     private Board board;
@@ -54,6 +56,7 @@ public class FoodDispenser extends Thread implements Subscriber {
 
     }
 
+    // TODO: make it functional
     private void setFood(int foodQuantity) {
         Random generator = new Random();
         for (int i = 0; i < (foodQuantity); i++) {
@@ -61,6 +64,7 @@ public class FoodDispenser extends Thread implements Subscriber {
         }
     }
 
+    @Deprecated
     public double foodPercent() {
         double allCells = height * width;
         int foodCells = board.countFoodCell();

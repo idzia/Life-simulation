@@ -7,6 +7,8 @@ import com.codecool.model.board.Cell;
 
 import java.util.*;
 
+// remove unused methods
+// extract StrategyController
 public abstract class HerbivoreStrategy implements BehavioralStrategy {
 
     private static final List<Directions> VALUES =
@@ -42,6 +44,7 @@ public abstract class HerbivoreStrategy implements BehavioralStrategy {
         this.positionController.setCurrentPosition(relativePosition);
     }
 
+    // move to the controller
     public void update(Cell[][] board) {
         setBoardView(board);
         int boardCenter = board.length / 2;
