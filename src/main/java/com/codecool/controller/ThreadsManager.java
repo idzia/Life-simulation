@@ -81,6 +81,7 @@ public class ThreadsManager {
         this.obs.subscribe(newCreature);
     }
 
+    // TODO: handle this with Stream
     private Cell findCellToSpawn(Cell[][] surrounding) {
         for (Cell[] cells : surrounding) {
             for (Cell cell : cells) {
@@ -93,6 +94,7 @@ public class ThreadsManager {
         return null;
     }
 
+    //TODO: make strategy changeable
     public List<Creature> getCreatures(int amount) {
         List<Creature> creatures = new ArrayList<>();
         for (int i=0;i<amount;i++) {

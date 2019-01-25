@@ -6,6 +6,8 @@ import com.codecool.model.creature.Subscriber;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO: change as many methods functional
+//TODO: switch fields to Atomic
 public class BoardObserver implements Observer {
     private List<Subscriber> subscribers;
 

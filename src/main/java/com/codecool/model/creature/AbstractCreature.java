@@ -5,8 +5,9 @@ import com.codecool.model.Directions;
 import com.codecool.model.Position;
 import com.codecool.model.creature.strategy.BehavioralStrategy;
 
-import java.util.Random;
-
+//TODO: extract CreatureController
+//TODO: switch fields to Atomic
+//TODO: clear deprecated methods
 public abstract class AbstractCreature extends Thread implements Creature{
     private int energy = 100;
     private int energyPerFood = 5;
@@ -20,6 +21,7 @@ public abstract class AbstractCreature extends Thread implements Creature{
         this.manager = manager;
     }
 
+    //TODO: move to controller
     public void move() {
         this.strategy.update(manager.cutBoard(this));
         Directions direction = this.strategy.suggestMove();
@@ -90,6 +92,7 @@ public abstract class AbstractCreature extends Thread implements Creature{
         this.doneMove = doneMove;
     }
 
+    @Deprecated
     public ThreadsManager getManager() {
         return manager;
     }

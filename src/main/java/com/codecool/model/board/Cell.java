@@ -3,6 +3,7 @@ package com.codecool.model.board;
 import com.codecool.model.Position;
 import com.codecool.model.creature.Creature;
 
+//TODO: deal with typos
 public class Cell {
     volatile private Creature currentCreature = null;
     volatile private int foodAmount = 0;
