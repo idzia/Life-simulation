@@ -21,4 +21,8 @@ public class CreatureController {
         }
     }
 
+    public void unlockDeadCells() {
+        manager.unlockDeadCell(creature);
+    }
+
 }
