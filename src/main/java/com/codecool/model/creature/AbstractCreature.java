@@ -21,15 +21,6 @@ public abstract class AbstractCreature extends Thread implements Creature{
         this.manager = manager;
     }
 
-    //TODO: move to controller
-    public void move() {
-        this.strategy.update(manager.cutBoard(this));
-        Directions direction = this.strategy.suggestMove();
-        if (manager.moveCreature(this, direction)) {
-            this.setDoneMove(true);
-        }
-    }
-
     @Override
     public void run() {
         while (!this.isDead()) {
@@ -88,7 +79,7 @@ public abstract class AbstractCreature extends Thread implements Creature{
         return doneMove;
     }
 
-    private void setDoneMove(boolean doneMove) {
+    public void setDoneMove(boolean doneMove) {
         this.doneMove = doneMove;
     }
 
