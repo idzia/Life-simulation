@@ -1,18 +1,13 @@
-package com.codecool.model;
+package com.codecool.controller;
 
-import com.codecool.controller.BoardObserver;
-import com.codecool.controller.FoodDispenser;
-import com.codecool.controller.ThreadsManager;
 import com.codecool.model.board.Board;
 import com.codecool.model.creature.Creature;
-import com.codecool.model.creature.CreatureFactory;
 import com.codecool.view.View;
 import com.codecool.view.windowedview.WindowedView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: move it to controller package
 //TODO: use configuration class or file
 public class Simulation implements Runnable {
     private View view;
@@ -40,7 +35,7 @@ public class Simulation implements Runnable {
         this.threadsManager.startCreatures(creatures);
         this.view = new WindowedView(board, 1000, 1000);
 
-        int fps = 60; //1x per sec
+        int fps = 1; //1x per sec
         double timePerTick = 1000000000 / fps;
         double delta = 0;
         long now;

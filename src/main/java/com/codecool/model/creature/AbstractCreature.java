@@ -2,11 +2,9 @@ package com.codecool.model.creature;
 
 import com.codecool.controller.CreatureController;
 import com.codecool.controller.ThreadsManager;
-import com.codecool.model.Directions;
 import com.codecool.model.Position;
 import com.codecool.model.creature.strategy.BehavioralStrategy;
 
-//TODO: extract CreatureController
 //TODO: switch fields to Atomic
 //TODO: clear deprecated methods
 public abstract class AbstractCreature extends Thread implements Creature{
