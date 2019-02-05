@@ -5,7 +5,6 @@ import com.codecool.model.creature.strategy.BehavioralStrategy;
 
 public interface Creature extends Subscriber {
 
-    void move();
     BehavioralStrategy getStrategy();
     Position getPosition();
     void setPosition(Position pos);

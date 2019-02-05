@@ -1,5 +1,6 @@
 package com.codecool.model.creature;
 
+import com.codecool.controller.CreatureController;
 import com.codecool.controller.ThreadsManager;
 import com.codecool.model.Directions;
 import com.codecool.model.Position;
@@ -14,35 +15,25 @@ public abstract class AbstractCreature extends Thread implements Creature{
     private Position position;
     private BehavioralStrategy strategy;
     volatile private boolean doneMove =false;
-    private ThreadsManager manager;
+    private CreatureController controller;
 
     public AbstractCreature(BehavioralStrategy strategy, ThreadsManager manager){
         this.strategy = strategy;
-        this.manager = manager;
-    }
-
-    //TODO: move to controller
-    public void move() {
-        this.strategy.update(manager.cutBoard(this));
-        Directions direction = this.strategy.suggestMove();
-        if (manager.moveCreature(this, direction)) {
-            this.setDoneMove(true);
-        }
+        this.controller = new CreatureController(this, manager);
     }
 
     @Override
     public void run() {
         while (!this.isDead()) {
             while (!this.isDoneMove()) {
-                move();
+                controller.move();
             }
         }
-        manager.unlockDeadCell(this);
+        controller.unlockDeadCells();
     }
 
     public void onNotify(){
         this.starve();
-
         this.setDoneMove(false);
     }
 
@@ -88,12 +79,7 @@ public abstract class AbstractCreature extends Thread implements Creature{
         return doneMove;
     }
 
-    private void setDoneMove(boolean doneMove) {
+    public void setDoneMove(boolean doneMove) {
         this.doneMove = doneMove;
-    }
-
-    @Deprecated
-    public ThreadsManager getManager() {
-        return manager;
     }
 }
