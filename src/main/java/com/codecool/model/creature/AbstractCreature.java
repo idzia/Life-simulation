@@ -1,17 +1,15 @@
 package com.codecool.model.creature;
 
+import com.codecool.SimulationConfig;
 import com.codecool.controller.CreatureController;
 import com.codecool.controller.ThreadsManager;
-import com.codecool.model.Directions;
 import com.codecool.model.Position;
 import com.codecool.model.creature.strategy.BehavioralStrategy;
 
-//TODO: extract CreatureController
 //TODO: switch fields to Atomic
-//TODO: clear deprecated methods
 public abstract class AbstractCreature extends Thread implements Creature{
-    private int energy = 100;
-    private int energyPerFood = 5;
+    private int energy = SimulationConfig.START_ENERGY;
+    private int energyPerFood = SimulationConfig.ENERGY_PER_FOOD;
     private Position position;
     private BehavioralStrategy strategy;
     volatile private boolean doneMove =false;

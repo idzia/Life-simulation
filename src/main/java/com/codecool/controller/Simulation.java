@@ -1,18 +1,14 @@
-package com.codecool.model;
+package com.codecool.controller;
 
-import com.codecool.controller.BoardObserver;
-import com.codecool.controller.FoodDispenser;
-import com.codecool.controller.ThreadsManager;
+import com.codecool.SimulationConfig;
 import com.codecool.model.board.Board;
 import com.codecool.model.creature.Creature;
-import com.codecool.model.creature.CreatureFactory;
 import com.codecool.view.View;
 import com.codecool.view.windowedview.WindowedView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: move it to controller package
 //TODO: use configuration class or file
 public class Simulation implements Runnable {
     private View view;
@@ -29,18 +25,18 @@ public class Simulation implements Runnable {
     }
 
     public void run() {
-        List<Creature> creatures = this.threadsManager.getCreatures(1);
+        List<Creature> creatures = this.threadsManager.getCreatures(SimulationConfig.START_AMOUNT_OF_CREATURES);
         this.observer.subscribe(new ArrayList<>(creatures));
-        this.board.initialize(15,15);
+        this.board.initialize(SimulationConfig.BOARD_WIDTH,SimulationConfig.BOARD_HEIGHT);
         FoodDispenser food = new FoodDispenser(this.board);
         this.observer.subscribe(food);
         food.start();
 
         board.populate(creatures);
         this.threadsManager.startCreatures(creatures);
-        this.view = new WindowedView(board, 1000, 1000);
+        this.view = new WindowedView(board, SimulationConfig.WINDOW_WIDTH, SimulationConfig.WINDOW_HEIGHT);
 
-        int fps = 60; //1x per sec
+        int fps = SimulationConfig.ROUNDS_PER_SEC; //1x per sec
         double timePerTick = 1000000000 / fps;
         double delta = 0;
         long now;
