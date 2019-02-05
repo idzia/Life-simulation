@@ -2,8 +2,8 @@ package com.codecool;
 
 public class SimulationConfig {
     //board
-    public static final int BOARD_HEIGHT = 15;
-    public static final int BOARD_WIDTH = 15;
+    public static final int BOARD_HEIGHT = 16;
+    public static final int BOARD_WIDTH = 16;
     public static final int START_AMOUNT_OF_CREATURES = 1;
 
     // speed of simulation
