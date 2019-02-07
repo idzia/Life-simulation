@@ -6,7 +6,10 @@ public class Position {
     private AtomicInteger x;
     private AtomicInteger y;
 
-    public Position() {}
+    public Position() {
+        this.x = new AtomicInteger();
+        this.y = new AtomicInteger();
+    }
 
     public Position(int y, int x) {
         this.x = new AtomicInteger(x);

@@ -47,7 +47,7 @@ public class Cell {
     }
 
     public void reduceFoodAmount(int foodAmount) {
-        this.foodAmount.set(this.foodAmount.get() + foodAmount);
+        this.foodAmount.set(this.foodAmount.get() - foodAmount);
     }
 
     synchronized public void setLock(boolean lock) {
