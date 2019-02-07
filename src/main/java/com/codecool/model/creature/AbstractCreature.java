@@ -6,13 +6,15 @@ import com.codecool.controller.ThreadsManager;
 import com.codecool.model.Position;
 import com.codecool.model.creature.strategy.BehavioralStrategy;
 
-//TODO: switch fields to Atomic
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
 public abstract class AbstractCreature extends Thread implements Creature{
-    private int energy = SimulationConfig.START_ENERGY;
-    private int energyPerFood = SimulationConfig.ENERGY_PER_FOOD;
+    private AtomicInteger energy = new AtomicInteger(SimulationConfig.START_ENERGY);
+    private AtomicInteger energyPerFood = new AtomicInteger(SimulationConfig.ENERGY_PER_FOOD);
     private Position position;
     private BehavioralStrategy strategy;
-    volatile private boolean doneMove =false;
+    private AtomicBoolean doneMove = new AtomicBoolean(false);
     private CreatureController controller;
 
     public AbstractCreature(BehavioralStrategy strategy, ThreadsManager manager){
@@ -36,24 +38,24 @@ public abstract class AbstractCreature extends Thread implements Creature{
     }
 
     private void starve(){
-        this.energy --;
+        this.energy.decrementAndGet();
     }
 
     public int getEnergy() {
-        return energy;
+        return energy.get();
     }
 
     @Override
     public void setEnergy(int energy) {
-        this.energy = energy;
+        this.energy.set(energy);
     }
 
     public boolean isDead() {
-       return this.energy <= 0;
+       return this.energy.get() <= 0;
     }
 
     public synchronized void eat(){
-        this.energy += energyPerFood;
+        this.energy.set(this.energy.get() + energyPerFood.get());
     }
 
     public BehavioralStrategy getStrategy() {
@@ -74,10 +76,10 @@ public abstract class AbstractCreature extends Thread implements Creature{
     }
 
     private boolean isDoneMove() {
-        return doneMove;
+        return doneMove.get();
     }
 
     public void setDoneMove(boolean doneMove) {
-        this.doneMove = doneMove;
+        this.doneMove.set(doneMove);
     }
 }
