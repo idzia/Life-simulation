@@ -1,8 +1,6 @@
 package com.codecool.controller;
 
 
-import com.codecool.model.board.Board;
-import com.codecool.model.board.Cell;
 import com.codecool.model.creature.Subscriber;
 
 import java.util.Random;
@@ -12,7 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 // TODO: remove unused methods
 public class FoodDispenser extends Thread implements Subscriber {
     private AtomicBoolean isNewTurn = new AtomicBoolean(false);
-    private Board board;
+    private BoardController boardController;
     private AtomicInteger height;
     private AtomicInteger width;
     private AtomicInteger startFoodQuantity;
@@ -20,17 +18,16 @@ public class FoodDispenser extends Thread implements Subscriber {
     private AtomicBoolean isInit = new AtomicBoolean(true);
 
 
-    public FoodDispenser(Board board) {
-        this.board = board;
-        this.height = new AtomicInteger(board.getHeight());
-        this.width = new AtomicInteger(board.getWidth());
+    public FoodDispenser(BoardController boardController) {
+        this.boardController = boardController;
+        this.height = new AtomicInteger(boardController.getBoard().getHeight());
+        this.width = new AtomicInteger(boardController.getBoard().getWidth());
         this.startFoodQuantity = new AtomicInteger(height.get() * width.get()*3);
     }
 
 
     private void switchTurn() {
         isNewTurn.set(!isNewTurn.get());
-
     }
 
     public void onNotify(){
@@ -60,14 +57,14 @@ public class FoodDispenser extends Thread implements Subscriber {
     private void setFood(int foodQuantity) {
         Random generator = new Random();
         for (int i = 0; i < (foodQuantity); i++) {
-            board.addFood(generator.nextInt(width.get()), generator.nextInt(height.get()));
+            boardController.addFood(generator.nextInt(width.get()), generator.nextInt(height.get()));
         }
     }
 
     @Deprecated
     public double foodPercent() {
         double allCells = height.get() * width.get();
-        int foodCells = board.countFoodCell();
+        int foodCells = boardController.countFoodCell();
 
         return foodCells/allCells;
     }

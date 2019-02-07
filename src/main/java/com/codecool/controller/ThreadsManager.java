@@ -2,30 +2,27 @@ package com.codecool.controller;
 
 import com.codecool.model.Directions;
 import com.codecool.model.Position;
-import com.codecool.model.board.Board;
 import com.codecool.model.board.Cell;
 import com.codecool.model.creature.AbstractCreature;
 import com.codecool.model.creature.Creature;
 import com.codecool.model.creature.CreatureBuilder;
-import com.codecool.model.creature.CreatureFactory;
-import com.codecool.model.creature.strategy.StupidHerbivoreStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ThreadsManager {
-    volatile private Board board;
+    volatile private BoardController boardController;
     private CreatureBuilder creatureBuilder;
     volatile  private Observer obs;
 
-    public ThreadsManager(Board board, Observer obs) {
+    public ThreadsManager(BoardController boardController, Observer obs) {
         this.obs = obs;
-        this.board = board;
+        this.boardController = boardController;
         this.creatureBuilder = new CreatureBuilder(this);
     }
 
     public Cell[][] cutBoard(Creature creature) {
-        return board.getCellsFrom(creature.getPosition());
+        return boardController.getCellsFrom(creature.getPosition());
     }
 
     public synchronized boolean moveCreature(Creature creature, Directions direction) {
@@ -43,7 +40,7 @@ public class ThreadsManager {
     }
 
     private void handleEating(Creature creature, Position current) {
-        Cell c = board.getCell(current.getX(), current.getY());
+        Cell c = boardController.getCell(current);
         if (c.getFoodAmount() > 0) {
             creature.eat();
             c.reduceFoodAmount(1);
@@ -51,19 +48,19 @@ public class ThreadsManager {
     }
 
     private boolean makeMove(Directions direction, Position current) {
-        Cell target = this.board.getNextCell(current.getX(), current.getY(), direction);
+        Cell target = this.boardController.getNextCell(current.getX(), current.getY(), direction);
         if (target.isLock()) {
             return false;
         } else {
-            this.board.lockCell(this.board.getNextCell(current.getX(), current.getY(), direction));
-            this.board.moveCreature(current, direction);
-            this.board.getCell(current.getX(), current.getY()).unlock();
+            this.boardController.lockCell(this.boardController.getNextCell(current.getX(), current.getY(), direction));
+            this.boardController.moveCreature(current, direction);
+            this.boardController.getCell(current).unlock();
             return true;
         }
     }
 
     private void splitCreature(Creature creature) {
-        Cell cell = findCellToSpawn(board.getCellsFrom(creature.getPosition().getX(), creature.getPosition().getY(), 1, false));
+        Cell cell = findCellToSpawn(boardController.getCellsFrom(creature.getPosition().getX(), creature.getPosition().getY(), 1, false));
         if (cell != null) {
             spawnNewCreature(creature, cell);
         } else {
@@ -117,7 +114,7 @@ public class ThreadsManager {
 
     public void unlockDeadCell(AbstractCreature c) {
         Position current = c.getPosition();
-        Cell target = this.board.getCell(current.getX(), current.getY());
+        Cell target = this.boardController.getCell(current);
         target.unlock();
         target.setCreature(null);
     }
