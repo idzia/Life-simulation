@@ -7,7 +7,6 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 //TODO: change as many methods functional
-//TODO: switch fields to Atomic
 public class BoardObserver implements Observer {
     private Queue<Subscriber> subscribers;
 
