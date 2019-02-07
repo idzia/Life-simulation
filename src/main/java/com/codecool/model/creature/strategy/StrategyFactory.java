@@ -6,7 +6,7 @@ public class StrategyFactory {
     // random strategy
     public BehavioralStrategy getStrategy() {
         Random rand = new Random();
-        int bound = Strategies.values().length - 1;
+        int bound = Strategies.values().length;
         return getStrategyInstance(Strategies.values()[rand.nextInt(bound)]);
     }
 

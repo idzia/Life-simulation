@@ -6,6 +6,7 @@ import com.codecool.model.board.Board;
 import com.codecool.model.board.Cell;
 import com.codecool.model.creature.AbstractCreature;
 import com.codecool.model.creature.Creature;
+import com.codecool.model.creature.CreatureBuilder;
 import com.codecool.model.creature.CreatureFactory;
 import com.codecool.model.creature.strategy.StupidHerbivoreStrategy;
 
@@ -14,13 +15,13 @@ import java.util.List;
 
 public class ThreadsManager {
     volatile private Board board;
-    private CreatureFactory factory;
+    private CreatureBuilder creatureBuilder;
     volatile  private Observer obs;
 
     public ThreadsManager(Board board, Observer obs) {
         this.obs = obs;
         this.board = board;
-        this.factory = new CreatureFactory(this);
+        this.creatureBuilder = new CreatureBuilder(this);
     }
 
     public Cell[][] cutBoard(Creature creature) {
@@ -72,7 +73,7 @@ public class ThreadsManager {
 
     private void spawnNewCreature(Creature creature, Cell cell) {
         int energy = creature.getEnergy() / 2;
-        Creature newCreature = factory.getCreature(new StupidHerbivoreStrategy());
+        Creature newCreature = creatureBuilder.getCreature();
         cell.setCreature(newCreature);
         newCreature.setPosition(cell.getPosition());
         newCreature.setEnergy(energy);
@@ -94,11 +95,10 @@ public class ThreadsManager {
         return null;
     }
 
-    //TODO: make strategy changeable
     public List<Creature> getCreatures(int amount) {
         List<Creature> creatures = new ArrayList<>();
         for (int i=0;i<amount;i++) {
-            creatures.add(factory.getCreature(new StupidHerbivoreStrategy()));
+            creatures.add(creatureBuilder.getCreature());
         }
         return creatures;
     }
