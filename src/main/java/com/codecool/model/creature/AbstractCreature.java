@@ -6,13 +6,14 @@ import com.codecool.controller.ThreadsManager;
 import com.codecool.model.Position;
 import com.codecool.model.creature.strategy.BehavioralStrategy;
 
-//TODO: switch fields to Atomic
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public abstract class AbstractCreature extends Thread implements Creature{
     private int energy = SimulationConfig.START_ENERGY;
-    private int energyPerFood = SimulationConfig.ENERGY_PER_FOOD;
+    private static final int energyPerFood = SimulationConfig.ENERGY_PER_FOOD;
     private Position position;
     private BehavioralStrategy strategy;
-    volatile private boolean doneMove =false;
+    private AtomicBoolean doneMove = new AtomicBoolean(false);
     private CreatureController controller;
 
     public AbstractCreature(BehavioralStrategy strategy, ThreadsManager manager){
@@ -36,7 +37,7 @@ public abstract class AbstractCreature extends Thread implements Creature{
     }
 
     private void starve(){
-        this.energy --;
+        this.energy--;
     }
 
     public int getEnergy() {
@@ -74,10 +75,10 @@ public abstract class AbstractCreature extends Thread implements Creature{
     }
 
     private boolean isDoneMove() {
-        return doneMove;
+        return doneMove.get();
     }
 
     public void setDoneMove(boolean doneMove) {
-        this.doneMove = doneMove;
+        this.doneMove.set(doneMove);
     }
 }

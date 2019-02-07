@@ -3,26 +3,25 @@ package com.codecool.controller;
 import com.codecool.model.creature.Creature;
 import com.codecool.model.creature.Subscriber;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 //TODO: change as many methods functional
-//TODO: switch fields to Atomic
 public class BoardObserver implements Observer {
-    private List<Subscriber> subscribers;
+    private Queue<Subscriber> subscribers;
 
     public BoardObserver() {
-        this.subscribers = new ArrayList<>();
+        this.subscribers = new ConcurrentLinkedQueue<>();
     }
 
     @Override
      public void subscribe(Subscriber subscriber) {
         this.subscribers.add(subscriber);
     }
-     public void subscribe(List<Subscriber> subscribers) {
+
+     public void subscribe(Queue<Subscriber> subscribers) {
         for (Subscriber subscriber: subscribers) {
             subscribe(subscriber);
-
         }
     }
 

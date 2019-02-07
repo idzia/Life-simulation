@@ -1,54 +1,51 @@
 package com.codecool.controller;
 
 
-import com.codecool.model.board.Board;
-import com.codecool.model.board.Cell;
 import com.codecool.model.creature.Subscriber;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 // TODO: remove unused methods
-// TODO: switch fields to Atomic
 public class FoodDispenser extends Thread implements Subscriber {
-    private volatile boolean isNewTurn = false;
-    private Board board;
+    private AtomicBoolean isNewTurn = new AtomicBoolean(false);
+    private BoardController boardController;
     private int height;
     private int width;
-    private int startFoodQuantity;
-    private int cauntTurn = 0;
-    private boolean isInit = true;
+    private final int startFoodQuantity;
+    private AtomicInteger countTurn = new AtomicInteger(0);
+    private AtomicBoolean isInit = new AtomicBoolean(true);
 
 
-    public FoodDispenser(Board board) {
-        this.board = board;
-        this.height = board.getHeight();
-        this.width = board.getWidth();
+    public FoodDispenser(BoardController boardController) {
+        this.boardController = boardController;
+        this.height = boardController.getBoard().getHeight();
+        this.width = boardController.getBoard().getWidth();
         this.startFoodQuantity = height * width*3;
-
     }
 
 
     private void switchTurn() {
-        isNewTurn = !isNewTurn;
-
+        isNewTurn.set(!isNewTurn.get());
     }
 
     public void onNotify(){
 
-        if (cauntTurn > 2) {
+        if (countTurn.get() > 2) {
             switchTurn();
-            cauntTurn = 0;
+            countTurn.set(0);
         }
-        cauntTurn++;
+        countTurn.incrementAndGet();
     }
 
     public void run() {
         while(!this.isInterrupted()) {
-            if (isInit) {
+            if (isInit.get()) {
                 setFood(startFoodQuantity/10);
-                isInit = false;
+                isInit.set(false);
             }
-            if (isNewTurn) {
+            if (isNewTurn.get()) {
                 setFood(startFoodQuantity/50);
                 switchTurn();
             }
@@ -60,16 +57,7 @@ public class FoodDispenser extends Thread implements Subscriber {
     private void setFood(int foodQuantity) {
         Random generator = new Random();
         for (int i = 0; i < (foodQuantity); i++) {
-            board.addFood(generator.nextInt(width), generator.nextInt(height));
+            boardController.addFood(generator.nextInt(width), generator.nextInt(height));
         }
     }
-
-    @Deprecated
-    public double foodPercent() {
-        double allCells = height * width;
-        int foodCells = board.countFoodCell();
-
-        return foodCells/allCells;
-    }
-
 }

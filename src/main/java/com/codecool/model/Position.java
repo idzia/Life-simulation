@@ -1,37 +1,42 @@
 package com.codecool.model;
 
-public class Position {
-    private int x;
-    private int y;
+import java.util.concurrent.atomic.AtomicInteger;
 
-    public Position() {}
+public class Position {
+    private AtomicInteger x;
+    private AtomicInteger y;
+
+    public Position() {
+        this.x = new AtomicInteger();
+        this.y = new AtomicInteger();
+    }
 
     public Position(int y, int x) {
-        this.x = x;
-        this.y = y;
+        this.x = new AtomicInteger(x);
+        this.y = new AtomicInteger(y);
     }
 
     public int getX() {
-        return x;
+        return x.get();
     }
 
     public void setX(int x) {
-        this.x = x;
+        this.x.set(x);
     }
 
     public int getY() {
-        return y;
+        return y.get();
     }
 
     public void setY(int y) {
-        this.y = y;
+        this.y.set(y);
     }
 
     @Override
     public String toString() {
         return "Position{" +
-                "x=" + x +
-                ", y=" + y +
+                "x=" + x.get() +
+                ", y=" + y.get() +
                 '}';
     }
 }
