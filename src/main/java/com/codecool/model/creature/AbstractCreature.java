@@ -7,11 +7,10 @@ import com.codecool.model.Position;
 import com.codecool.model.creature.strategy.BehavioralStrategy;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class AbstractCreature extends Thread implements Creature{
-    private AtomicInteger energy = new AtomicInteger(SimulationConfig.START_ENERGY);
-    private AtomicInteger energyPerFood = new AtomicInteger(SimulationConfig.ENERGY_PER_FOOD);
+    private int energy = SimulationConfig.START_ENERGY;
+    private static final int energyPerFood = SimulationConfig.ENERGY_PER_FOOD;
     private Position position;
     private BehavioralStrategy strategy;
     private AtomicBoolean doneMove = new AtomicBoolean(false);
@@ -38,24 +37,24 @@ public abstract class AbstractCreature extends Thread implements Creature{
     }
 
     private void starve(){
-        this.energy.decrementAndGet();
+        this.energy--;
     }
 
     public int getEnergy() {
-        return energy.get();
+        return energy;
     }
 
     @Override
     public void setEnergy(int energy) {
-        this.energy.set(energy);
+        this.energy = energy;
     }
 
     public boolean isDead() {
-       return this.energy.get() <= 0;
+       return this.energy <= 0;
     }
 
     public synchronized void eat(){
-        this.energy.set(this.energy.get() + energyPerFood.get());
+        this.energy += energyPerFood;
     }
 
     public BehavioralStrategy getStrategy() {

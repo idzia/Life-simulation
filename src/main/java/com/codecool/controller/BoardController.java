@@ -18,13 +18,12 @@ public class BoardController {
     public BoardController() {
     }
 
-
     public void initialize(int width, int height) {
         this.board = new Board(width, height);
     }
 
 
-    Cell getNextCell(Position pos, Directions dir) {
+    private Cell getNextCell(Position pos, Directions dir) {
         pos = getPositionOfCellInDirection(pos, dir);
         return board.getCell(pos.getY(), pos.getX());
     }
@@ -156,7 +155,7 @@ public class BoardController {
     }
 
     public void reduceFood(int x, int y) {
-        board.getCell(y, x).reduceFoodAmount(1);
+        board.getCell(y, x).reduceFoodAmount();
     }
 
     private Position getPositionOfCellInDirection(Position pos, Directions dir) throws IllegalArgumentException {

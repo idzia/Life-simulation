@@ -43,7 +43,7 @@ public class ThreadsManager {
         Cell c = boardController.getCell(current);
         if (c.getFoodAmount() > 0) {
             creature.eat();
-            c.reduceFoodAmount(1);
+            c.reduceFoodAmount();
         }
     }
 

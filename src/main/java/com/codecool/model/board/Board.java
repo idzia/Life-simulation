@@ -1,6 +1,5 @@
 package com.codecool.model.board;
 
-import com.codecool.controller.BoardController;
 import com.codecool.model.Position;
 
 //TODO: change as many methods functional

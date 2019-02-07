@@ -11,18 +11,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class FoodDispenser extends Thread implements Subscriber {
     private AtomicBoolean isNewTurn = new AtomicBoolean(false);
     private BoardController boardController;
-    private AtomicInteger height;
-    private AtomicInteger width;
-    private AtomicInteger startFoodQuantity;
-    private AtomicInteger cauntTurn = new AtomicInteger(0);
+    private int height;
+    private int width;
+    private final int startFoodQuantity;
+    private AtomicInteger countTurn = new AtomicInteger(0);
     private AtomicBoolean isInit = new AtomicBoolean(true);
 
 
     public FoodDispenser(BoardController boardController) {
         this.boardController = boardController;
-        this.height = new AtomicInteger(boardController.getBoard().getHeight());
-        this.width = new AtomicInteger(boardController.getBoard().getWidth());
-        this.startFoodQuantity = new AtomicInteger(height.get() * width.get()*3);
+        this.height = boardController.getBoard().getHeight();
+        this.width = boardController.getBoard().getWidth();
+        this.startFoodQuantity = height * width*3;
     }
 
 
@@ -32,21 +32,21 @@ public class FoodDispenser extends Thread implements Subscriber {
 
     public void onNotify(){
 
-        if (cauntTurn.get() > 2) {
+        if (countTurn.get() > 2) {
             switchTurn();
-            cauntTurn.set(0);
+            countTurn.set(0);
         }
-        cauntTurn.incrementAndGet();
+        countTurn.incrementAndGet();
     }
 
     public void run() {
         while(!this.isInterrupted()) {
             if (isInit.get()) {
-                setFood(startFoodQuantity.get()/10);
+                setFood(startFoodQuantity/10);
                 isInit.set(false);
             }
             if (isNewTurn.get()) {
-                setFood(startFoodQuantity.get()/50);
+                setFood(startFoodQuantity/50);
                 switchTurn();
             }
         }
@@ -57,16 +57,7 @@ public class FoodDispenser extends Thread implements Subscriber {
     private void setFood(int foodQuantity) {
         Random generator = new Random();
         for (int i = 0; i < (foodQuantity); i++) {
-            boardController.addFood(generator.nextInt(width.get()), generator.nextInt(height.get()));
+            boardController.addFood(generator.nextInt(width), generator.nextInt(height));
         }
     }
-
-    @Deprecated
-    public double foodPercent() {
-        double allCells = height.get() * width.get();
-        int foodCells = boardController.countFoodCell();
-
-        return foodCells/allCells;
-    }
-
 }
