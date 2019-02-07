@@ -8,6 +8,7 @@ import com.codecool.view.windowedview.WindowedView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 //TODO: use configuration class or file
 public class Simulation implements Runnable {
@@ -26,7 +27,7 @@ public class Simulation implements Runnable {
 
     public void run() {
         List<Creature> creatures = this.threadsManager.getCreatures(SimulationConfig.START_AMOUNT_OF_CREATURES);
-        this.observer.subscribe(new ArrayList<>(creatures));
+        this.observer.subscribe(new ConcurrentLinkedQueue<>(creatures));
         this.board.initialize(SimulationConfig.BOARD_WIDTH,SimulationConfig.BOARD_HEIGHT);
         FoodDispenser food = new FoodDispenser(this.board);
         this.observer.subscribe(food);
