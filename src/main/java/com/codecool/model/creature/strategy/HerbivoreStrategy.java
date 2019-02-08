@@ -22,6 +22,10 @@ public abstract class HerbivoreStrategy implements BehavioralStrategy {
         this.rand = new Random();
     }
 
+    public Random getRand() {
+        return rand;
+    }
+
     public PositionController getPositionController() {
         return positionController;
     }
@@ -65,7 +69,7 @@ public abstract class HerbivoreStrategy implements BehavioralStrategy {
         return herbivoreSight[positionController.getCurrentPosition().getX()][positionController.getCurrentPosition().getY()];
     }
 
-    private void addTarget(int i, int j) {
+    protected void addTarget(int i, int j) {
         if (herbivoreSight[i][j].getFoodAmmount() > 0) {
             Cell cell = herbivoreSight[i][j];
             targets.put(cell, positionController.calculateDistance(cell.getPosition()));
@@ -94,6 +98,22 @@ public abstract class HerbivoreStrategy implements BehavioralStrategy {
             }
         }
         return null;
+    }
+
+    protected Cell getClosestWithBiggestFoodAmount() {
+        Cell cell = null;
+        int foodAmount = 0;
+        int distance = herbivoreSight.length / 2;
+
+        for (Map.Entry<Cell, Integer> entry : targets.entrySet()) {
+            if (entry.getKey().getFoodAmmount() >= foodAmount
+                    && entry.getValue() <= distance) {
+                cell = entry.getKey();
+                foodAmount = entry.getKey().getFoodAmmount();
+                distance = entry.getValue();
+            }
+        }
+        return cell;
     }
 
     protected boolean stillHasFood() {
